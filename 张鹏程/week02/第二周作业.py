@@ -55,7 +55,8 @@ def evaluate(model):
     correct = 0
     with torch.no_grad():  # 不计算梯度
         y_pred_logits = model(x)  # 模型输出logits（5维）
-        y_pred = torch.argmax(y_pred_logits, dim=1)  # 取概率最大的索引作为预测结果
+        y_pred_probs = torch.softmax(y_pred_logits, dim=1)  # 转换为概率（5维）
+        y_pred = torch.argmax(y_pred_probs, dim=1)  # 取概率最大的索引作为预测结果
         # 统计正确个数
         correct = (y_pred == y).sum().item()
     accuracy = correct / test_sample_num
@@ -67,7 +68,7 @@ def main():
     # 配置参数
     epoch_num = 20  # 训练轮数
     batch_size = 20  # 每次训练样本个数
-    train_sample = 5000  # 每轮训练总共训练的样本总数
+    train_sample = 5000  # 总共训练的样本总数
     input_size = 5  # 输入向量维度
     learning_rate = 0.001  # 学习率
     # 建立模型
@@ -87,9 +88,9 @@ def main():
             y = train_y[batch_index * batch_size: (batch_index + 1) * batch_size]
             loss = model(x, y)  # 计算loss  model.forward(x,y)
             # print('----->loss\n', loss)
-            optim.zero_grad()  # 梯度归零
             loss.backward()  # 计算梯度
             optim.step()  # 更新权重
+            optim.zero_grad()  # 梯度归零
             total_loss.append(loss.item())
         print("=========\n第%d轮平均loss:%f" % (epoch + 1, np.mean(total_loss)))
         acc = evaluate(model)  # 测试本轮模型结果
