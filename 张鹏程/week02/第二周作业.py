@@ -24,7 +24,7 @@ class TorchModel(nn.Module):
         if y is not None:
             return self.loss(y_pred, y)  # 预测值和真实值计算损失
         else:
-            return y_pred  # 输出预测结果
+            return torch.softmax(y_pred, dim=1)  # 输出预测结果，转换为概率（5维）
 
 
 # 生成一个样本, 样本的生成方法，代表了我们要学习的规律
@@ -55,8 +55,7 @@ def evaluate(model):
     correct = 0
     with torch.no_grad():  # 不计算梯度
         y_pred_logits = model(x)  # 模型输出logits（5维）
-        y_pred_probs = torch.softmax(y_pred_logits, dim=1)  # 转换为概率（5维）
-        y_pred = torch.argmax(y_pred_probs, dim=1)  # 取概率最大的索引作为预测结果
+        y_pred = torch.argmax(y_pred_logits, dim=1)  # 取概率最大的索引作为预测结果
         # 统计正确个数
         correct = (y_pred == y).sum().item()
     accuracy = correct / test_sample_num
