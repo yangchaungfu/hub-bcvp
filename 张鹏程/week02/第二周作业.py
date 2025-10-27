@@ -16,15 +16,16 @@ class TorchModel(nn.Module):
     def __init__(self, input_size):
         super(TorchModel, self).__init__()
         self.linear = nn.Linear(input_size, 5)  # 线性层
-        self.loss = nn.CrossEntropyLoss()  # loss函数采用交叉熵损失，包含Softmax激活函数
+        # self.loss = nn.CrossEntropyLoss()  # loss函数采用交叉熵损失，包含Softmax激活函数
+        self.loss = nn.functional.cross_entropy  # 与nn.CrossEntropyLoss()等效
 
     # 当输入真实标签，返回loss值；无真实标签，返回预测值
     def forward(self, x, y=None):
-        y_pred = self.linear(x)  # (batch_size, input_size) -> (batch_size, 1)
+        y_pred = self.linear(x)  # (batch_size, input_size) -> (batch_size, 5)
         if y is not None:
-            return self.loss(y_pred, y)  # 预测值和真实值计算损失
+            return self.loss(y_pred, y)  # 预测值和真实值计算损失，包含softmax
         else:
-            return torch.softmax(y_pred, dim=1)  # 输出预测结果，转换为概率（5维）
+            return torch.softmax(y_pred, dim=-1)  # 输出预测结果，转换为概率（5维）
 
 
 # 生成一个样本, 样本的生成方法，代表了我们要学习的规律
