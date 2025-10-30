@@ -27,10 +27,11 @@ class RNNClassifierModel(nn.Module):
         self.loss = nn.CrossEntropyLoss()
 
     def forward(self, x, y=None):
-        embed = self.embedding(x)  # x: (batch_size, sentence_length, vector_dim)
-        _, hidden = self.rnn(embed)  # hidden: (batch_size, sentence_length, hidden_size)
-        hidden = hidden.squeeze(0)  # hidden: (batch_size, hidden_size)
-        y_pred = self.linear(hidden)  # y_pred: (batch_size, num_classes)
+        embed = self.embedding(x)  # embed: (batch_size, sentence_length, vector_dim)
+        output, hidden = self.rnn(embed)  # hidden: (batch_size, sentence_length, hidden_size)
+        # hidden = hidden.squeeze(0)  # hidden: (batch_size, hidden_size)
+        rnn_out = output[:, -1, :]
+        y_pred = self.linear(rnn_out)  # y_pred: (batch_size, num_classes)
         if y is not None:
             return self.loss(y_pred, y)
         else:
