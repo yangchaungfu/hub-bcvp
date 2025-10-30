@@ -53,8 +53,8 @@ def build_simple(vocab, sentences_len):
     # 生成样本长度个字符
     x_chars = random.choices(validate_char, k=sentences_len)
     # 随机生成一个目标字符
-    # target_chars = ['a', 'b', 'c']
     target_chars = ['a']
+    target_chars = ['a', 'b', 'c']
     # 记录目标所在位置
     positions = [idx for idx, char in enumerate(x_chars) if char in target_chars]
     # 计算标签（0~4最大的，5未出现）
@@ -94,7 +94,7 @@ def evaluate(model, vocab, sentences_len):
 def main():
     num_epochs = 20  # 训练轮数
     batch_size = 20  # 每次训练的样本数
-    train_sample_num = 5000  # 每轮总共训练样本数
+    train_sample_num = 500  # 每轮总共训练样本数
     embedding_dim = 16  # 每个字的维度
     hidden_size = 32  # RNN影藏层维度
     output_size = 6  # 输出类别数（0~5对应1~6）
@@ -138,9 +138,9 @@ def predict(model_path, vocab_path, test_strs):
     model = RNNClassifierModel(len(vocab), embedding_dim, hidden_size, output_size)
     model.load_state_dict(torch.load(model_path))
     x = []
-    for test_strs in test_strs:
+    for test_str in test_strs:
         # 截取前sentence_length个字符，不足则补pad（这里简化为直接截断）
-        x_str = test_strs[:sentence_length]
+        x_str = test_str[:sentence_length]
         x.append([vocab.get(c, vocab['unk']) for c in x_str])
     model.eval()
     with torch.no_grad():
@@ -152,6 +152,6 @@ def predict(model_path, vocab_path, test_strs):
 
 
 if __name__ == '__main__':
-    # main()
+    main()
     test_strings = ['abcdefg', 'lkaajhy', 'hddhqw', 'fhxceui', 'ppppppp', 'aaaaa']
     predict('model.pt', 'vocab.json', test_strings)
