@@ -16,7 +16,14 @@ import matplotlib.pyplot as plt
 
 class TorchModel(nn.Module):
     def __init__(self, sentence_len, token_dim, hidden_size, vocab):
-        #print("vocab:\n", vocab)
+        """
+        Args:
+            sentence_len: 单个文本的长度
+            token_dim: 每个词对应的向量维度
+            hidden_size:
+            vocab: 词表
+        """
+        # print("vocab:\n", vocab)
         super(TorchModel, self).__init__()
         self.embedding = nn.Embedding(len(vocab), token_dim, padding_idx=0)  # embedding层
         self.rnn = nn.RNN(token_dim, hidden_size, bias=False, batch_first=True)
@@ -28,7 +35,7 @@ class TorchModel(nn.Module):
         x = self.embedding(x)  # (batch_size, sentence_len) -> (batch_size, sentence_len, token_dim)
         x, _ = self.rnn(x)  # (batch_size, sentence_len, token_dim) -> (batch_size, sentence_len, hidden_size)
         y_pred = self.linear(x)  # (batch_size, sentence_len, hidden_size) -> (batch_size, sentence_len, 1)
-        y_pred = y_pred.squeeze(-1)
+        y_pred = y_pred.squeeze(-1)  # (batch_size, sentence_len, 1) -> (batch_size, sentence_len)
 
         # print("y_pred: ", y_pred)
         # print("y_true: ", y)
@@ -40,7 +47,7 @@ class TorchModel(nn.Module):
 
 # 构建词表， "abc" -> {"pad": 0, "a":1, "b":2, "c":3, "unk":4}
 def build_vocab():
-    chars = "你好，朋友！Go我和he他de早"  # 字符集, 不得包含重复字符, 否则embedding时会报错。
+    chars = "你好，朋友！Go我和he他de早rqw3g"  # 字符集, 不得包含重复字符, 否则embedding时会报错。
     vocab = {"[pad]": 0}
     for index, char in enumerate(chars):
         vocab[char] = index + 1  # 每个字对应一个序号
@@ -56,7 +63,7 @@ def build_sample(vocab, sentence_length):
 
     # 如果关键字最早出现在位置i，那么将该本文归为i类(0<=i<len)；如果没出现，就归为len类。
     keywords = ['我', '你', '他']
-    min_pos = len(sentence)-1
+    min_pos = len(sentence) - 1
     for keyword in keywords:
         try:
             pos = sentence.index(keyword)
@@ -77,6 +84,7 @@ def build_dataset(total_sample_num, vocab, sentence_len):
         dataset_x.append(x)
         dataset_y.append(y)
     return torch.LongTensor(dataset_x), torch.LongTensor(dataset_y)
+
 
 # 测试、评估模型的准确率
 def evaluate(model, vocab, sentence_len):
@@ -110,8 +118,8 @@ def main():
     train_sample_num = 600  # 每轮训练总共训练的样本总数
     learning_rate = 0.005  # 学习率
 
-    sentence_len = 12  # 样本文本长度
-    token_dim = 10  # 每个字的维度
+    sentence_len = 10  # 单个文本的长度
+    token_dim = 8  # 每个词对应的向量维度
     hidden_size = 16  # 隐藏层维度
 
     # 建立字表
@@ -133,8 +141,8 @@ def main():
             optim.step()  # 更新权重
             watch_loss.append(loss.item())
 
-        avg_loss = np.mean(watch_loss)  # 本轮的平均Loss
-        print(f"=========\n第{epoch + 1}轮的平均loss: {round(avg_loss, 5)}")
+        avg_loss = round(np.mean(watch_loss), 4)  # 本轮的平均Loss
+        print(f"=========\n第{epoch + 1}轮的平均loss: {avg_loss}")
 
         accuracy = evaluate(model, vocab, sentence_len)  # 测试本轮模型结果
         log.append([accuracy, avg_loss])
@@ -167,13 +175,14 @@ def str_to_sequence(vocab, sentence, max_len):
     seq = [vocab.get(s, vocab["[unk]"]) for s in sentence[:max_len]]
     if len(seq) < max_len:
         seq += [vocab["[pad]"]] * (max_len - len(seq))
-    seq += [vocab["[pad]"]]   # 在末位扩充一个无意义的词，以适配“关键字不在文本中” 的len分类
+    seq += [vocab["[pad]"]]  # 在末位扩充一个无意义的词，以适配“关键字不在文本中” 的len分类
     return seq
+
 
 # 使用训练好的模型做预测
 def predict(model_path, vocab_path, sentences):
-    sentence_len = 12  # 样本文本长度
-    token_dim = 10  # 每个字的维度
+    sentence_len = 10  # 单个文本的长度
+    token_dim = 8  # 每个词对应的向量维度
     hidden_size = 16  # 隐藏层维度
 
     # 加载词表
@@ -195,12 +204,13 @@ def predict(model_path, vocab_path, sentences):
         result = model.forward(torch.LongTensor(input_matrix))  # 模型预测
 
     for sentence, y in zip(sentences, result):
-        print(f"输入：{sentence:20s}, 输出:{y.numpy().round(5)}, 预测类别：{torch.argmax(y)}")
-  # for i, sentence in enumerate(sentences):
-    #     print(f"输入：{sentence}, 输出：{result[i]}, 预测类别：{round(float(result[i]))}")
+        print(f"输入：{sentence:10s}, 输出:{y.numpy().round(5)}, 预测类别：{torch.argmax(y)}\n")
+
 
 if __name__ == "__main__":
     main()
     print("\n使用训练好的模型做预测...")
-    input_data = ["fn我是一个程序员", "哈哈，他说我不懂", "wz你dfga", "n只不akwww我", "rqwde33g"]
+    print("     规则：如果关键字('你'、'我'、'他')出现在文本的位置i，那么将该本文归为i类(0<=i<10)；如果没出现，就归为10类。\n ")
+
+    input_data = ["rqwde33g", "fn我是一个程序员", "哈哈，他说我不懂", "wz你dfga", "n只不akwww我"]
     predict("NLP_text_classify.pth", "NLP_text_classify_vocab.json", input_data)
