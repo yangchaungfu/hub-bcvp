@@ -1,6 +1,5 @@
-# week3作业
+# week4作业
 import json
-from os import path
 
 # 词典；每个词后方存储的是其词频，词频仅为示例，不会用到，也可自行修改
 Dict = {"经常": 0.1,
