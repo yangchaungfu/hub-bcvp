@@ -40,11 +40,12 @@ def sentence_to_vector(sentences, model):
 
 
 def main():
-    model = Word2Vec.load(r"word2vec.pth")  # 加载词向量模型, r 前缀表示这是一个原始字符串（raw string），可以防止路径中的反斜杠被转义
     sentences = load_corpus("word2vec_kmeans_titles.txt")  # 加载待分类的语料(文章标题)
+    model = Word2Vec.load(r"word2vec.pth")  # 加载词向量模型, r 前缀表示这是一个原始字符串（raw string），可以防止路径中的反斜杠被转义
     vectors = sentence_to_vector(sentences, model)  # 将所有标题向量化
 
-    cluster_num = int(math.sqrt(len(sentences)))  # 指定聚类数量
+    # cluster_num = int(math.sqrt(len(sentences)))  # 指定聚类数量
+    cluster_num = 35  # 通过肘部法则找到的最佳K值，参考：word2vec_kmeans_findbest.py
     print("指定聚类数量：", cluster_num)
 
     kmeans = KMeans(cluster_num)  # 定义一个kmeans计算类
@@ -54,13 +55,14 @@ def main():
     label_sum_distance = {i: 0 for i in range(cluster_num)}  # {簇号: 簇内向量与质心的距离之和}
     for label, sentence, vector in zip(kmeans.labels_, sentences, vectors):  # 取出簇号及对应的句子、向量
         label_sentences_dict[label].append(sentence)  # 将同簇号的标题放到一起
-        center_point = kmeans.labels_[label]  # 簇号为label的质心
+        center_point = kmeans.cluster_centers_[label]  # 簇号为label的质心
         label_sum_distance[label] += np.linalg.norm(np.array(vector) - center_point)  # 计算当前向量与质心的距离，并累加到簇内距离之和
 
     # 计算簇内平均距离, {簇号: 簇内平均距离}
     label_avg_distance = {}
     for label, sum_distance in label_sum_distance.items():
-        label_avg_distance[label] = sum_distance / len(label_sentences_dict[label])
+        # 簇内平均距离 = 簇内向量与质心的距离之和 / 簇内向量数量
+        label_avg_distance[label] = sum_distance / np.sum(kmeans.labels_ == label)
 
     # 按簇内平均距离从小到大排序
     label_avg_distance = dict(sorted(label_avg_distance.items(), key=lambda x: x[1]))
