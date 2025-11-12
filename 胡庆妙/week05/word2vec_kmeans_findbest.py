@@ -49,7 +49,7 @@ def classify(vectors, cluster_num):
     # 所有向量与质心的距离之和
     sum_distance = 0.0
     for label, vector in zip(kmeans.labels_, vectors):  # 取出簇号及对应的向量
-        center_point = kmeans.labels_[label]  # 簇号为label的质心
+        center_point = kmeans.cluster_centers_[label]  # 簇号为label的质心
         sum_distance += np.linalg.norm(np.array(vector) - center_point)  # 计算当前向量与质心的距离，并累加到距离之和
 
     # 所有向量与对应质心的平均距离
@@ -66,7 +66,7 @@ def main():
     kk = []
     dis = []
     # 指定聚类数量，计算所有向量与对应质心的平均距离
-    for k in range(2, int(math.sqrt(len(sentences))) - 10):
+    for k in range(2, int(math.sqrt(len(sentences)))*4):
         avg_distance = classify(vectors, k)
         kk.append(k)
         dis.append(avg_distance)
