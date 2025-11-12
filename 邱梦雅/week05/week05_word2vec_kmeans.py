@@ -85,7 +85,7 @@ def main():
     # 3. 按排序打印聚类结果
     for label, distance in sorted_label_distance_list:
         print("============= cluster %s ===============" % label)
-        print("=> 类内平均距离：%f" % distance)
+        print("=> 类内平均距离：%.4f" % distance)
         sentences = sentence_label_dict[label]
         for i in range(min(10, len(sentences))):  #随便打印几个，太多了看不过来
             print(sentences[i].replace(" ", ""))
