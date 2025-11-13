@@ -27,7 +27,7 @@ class RNNClassifierModel(nn.Module):
         self.loss = nn.CrossEntropyLoss()
 
     def forward(self, x, y=None):
-        embed = self.embedding(x)  # embed: (batch_size, sentence_length, vector_dim)
+        embed = self.embedding(x)  # x:(batch_size, sentence_length) -> embed: (batch_size, sentence_length, embedding_dim)
         output, hidden = self.rnn(embed)  # hidden: (batch_size, sentence_length, hidden_size)
         # hidden = hidden.squeeze(0)  # hidden: (batch_size, hidden_size)
         rnn_out = output[:, -1, :]
@@ -103,7 +103,7 @@ def main():
     learning_rate = 0.001  # 学习率
     # 构建词表
     vocab = build_vocab()
-
+    # 初始化模型
     model = RNNClassifierModel(len(vocab), embedding_dim, hidden_size, output_size)
     # Adam优化器实现简单，计算高效，对内存的需求少
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
