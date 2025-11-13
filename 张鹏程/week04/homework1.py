@@ -1,6 +1,5 @@
-# week3作业
+# week4作业
 import json
-from os import path
 
 # 词典；每个词后方存储的是其词频，词频仅为示例，不会用到，也可自行修改
 Dict = {"经常": 0.1,
@@ -50,21 +49,23 @@ def all_cut1(sentence, Dict):
     dp = [[] for _ in range(n + 1)]
     # 空字符串的切分结果为空列表，初始化列表
     dp[0] = [[]]
+    # 计算dp[1]到dp[n]（前1个字符到前n个字符的切分结果）
     for i in range(1, n + 1):
         # 遍历所有可能得起始位置
         for j in range(i):
             word = sentence[j:i]
             # 若在词典中，且dp[j]有有效切分，则组合结果
-            if word in Dict and dp[j]:
+            dpj = dp[j]
+            if word in Dict and dpj:
                 # 将dp[j]中每个切分结果加上当前词，添加到dp[i]中
-                for path in dp[j]:
+                for path in dpj:
                     new_path = path.copy()
                     new_path.append(word)
                     dp[i].append(new_path)
     return dp[n]
 
 
-print(all_cut(sentence, Dict))
+# print(all_cut(sentence, Dict))
 print(all_cut1(sentence, Dict))
 # 目标输出;顺序不重要
 target = [
