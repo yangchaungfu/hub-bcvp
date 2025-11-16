@@ -1,0 +1,59 @@
+#coding:utf8
+
+# 词典；每个词后方存储的是其词频，词频仅为示例。
+Dict = {"改善": 0.1,
+        "拖延": 0.05,
+        "拖延症": 0.1,
+        "症": 0.001,
+        "的": 0.1,
+        "有效": 0.1,
+        "方法": 0.2,
+        "分享": 0.2,
+        "有": 0.05,
+        "效": 0.05,
+        "方": 0.05,
+        "法": 0.1}
+
+# 待切分文本
+sentence = "改善拖延症的有效方法分享"
+
+
+# 实现全切分函数，输出根据字典能够切分出的所有的切分方式
+def all_cut(sentence, Dict):
+    def backtrack(start, path, result):
+        # 如果已经处理到句子末尾，将当前路径添加到结果中
+        if start == len(sentence):
+            result.append(path[:])
+            return
+
+        # 尝试所有可能的切分长度
+        for end in range(start + 1, len(sentence) + 1):
+            word = sentence[start:end]
+            # 如果当前子串在词典中，继续递归
+            if word in Dict:
+                path.append(word)
+                backtrack(end, path, result)
+                path.pop()  # 回溯，移除最后添加的词
+
+    result = []
+    backtrack(0, [], result)
+    return result
+
+
+# 目标输出;
+target = all_cut(sentence, Dict)
+
+# 打印所有切分结果
+print("句子全切分结果：")
+print("待切分句子：", sentence)
+print("\n所有可能的切分方式：")
+for i, segmentation in enumerate(target, 1):
+    print(f"{i:2d}: {segmentation}")
+
+print(f"\n总共找到 {len(target)} 种切分方式")
+
+# 验证每种切分方式是否都能完整覆盖原句子
+print("\n验证切分正确性：")
+for i, seg in enumerate(target):
+    reconstructed = ''.join(seg)
+    print(f"切分方式 {i + 1}: {'+'.join(seg)} = '{reconstructed}' {'✓' if reconstructed == sentence else '✗'}")

@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+# coding: utf-8
+
+# 基于训练的好的词提供模型进行迭代
+# 关键采用Kmeans算法
+# 新增功能：基于类内距离对公告结果进行排序
+导入数学
+导入 re
+导入 json
+进口jieba
+导入 numpy 库并将其命名为 np
+from  gensim.models import Word2Vec​​  
+from  sklearn.cluster import  KMeans​​ 
+from  collections  import  defaultdict
+
+
+# 输入模型文件路径
+# 加载训练好的模型
+def  load_word2vec_model ( path ):
+    模型 = Word2Vec.load(路径)
+    返回模型
+
+
+def  load_sentence ( path ):
+    sentences  =  set ()
+    with  open ( path , encoding = "utf8" ) as  f :
+        对于 f 中的每行：
+            句子 = line.strip()
+            sentences.add ( " " .join ( jieba.cut ( sentence ) ) )​​
+    print ( "获取句子数量：" , len (句子))
+    返回句子
+
+
+# 将文本服务化
+def  sentences_to_vectors ( sentences , model ):
+    vectors  = []
+    对于 句子中的句子 ： 
+        words=sentence.split()#句子是分好词的，空格分开
+        vector  =  np.zeros ( model.vector_size )​​​​
+        #所有词的支持相加求平均，作为句子的支持
+        for  word  in  words :
+            尝试：
+                vector  +  = model.wv [ word ]​
+            除 KeyError 外：
+                # 部分词在训练中未出现，用全0代替
+                vector  +  = np.zeros ( model.vector_size )​​​
+        vectors.append ( vector / len (  words ) )​ 
+    返回 np.array(vectors)
+
+
+# 计算每一类的内平均距离
+def  calculate_intra_cluster_distances ( vectors , labels , cluster_centers ):
+    cluster_distances  =  defaultdict ( list )
+
+    对于 zip(vectors, labels) 中的每个 vector 和 label：
+        中心 = cluster_centers[label]
+        # 计算样本到总部中心的欧氏距离
+        距离 = np.linalg.norm(向量 - 中心)
+        cluster_distances [ label ] .append ( distance )
+
+    # 计算每个人的平均类内距离
+    avg_cluster_distances  = {}
+    对于标签，在 cluster_distances.items() 中：
+        平均距离 = np.mean(距离)
+        avg_cluster_distances [ label ] =  avg_distance
+
+    返回 avg_cluster_distances
+
+
+def  main ():
+    model = load_word2vec_model(r"model.w2v") # 加载词服务模型
+    Sentence = load_sentence("titles.txt") # 加载所有标题
+    Vectors = Sentences_to_Vectors(sentences, model) # 将所有标题支持化
+
+    n_clusters = int(math.sqrt(len(sentences))) # 指定恐慌数量
+    print("指定恐慌数量：", n_clusters)
+    kmeans = KMeans(n_clusters) # 定义一个kmeans计算类
+    kmeans.fit(vectors) # 进行奥迪计算
+
+    # 计算类内距离
+    avg_cluster_distances  =  calculate_intra_cluster_distances (
+        向量、kmeans.labels_、kmeans.cluster_centers_
+    ）
+
+    sentence_label_dict  =  defaultdict ( list )
+    对于句子，zip 中的标签(sentences, kmeans.labels_): # 提取句子和标签
+        Sentence_label_dict[label].append(sentence) # 同标签的放到一起
+
+    # 根据类内部平均距离对噪声进行排序（从结构到分散）
+    sorted_clusters  =  sorted ( avg_cluster_distances.items ( ) ,
+                             key=lambda x: x[1]) # 按平均距离升序排列
+
+    print("===按类别内部距离排序的排名结果（从结构到分散）===")
+    对于 sorted_clusters 中的每个标签和平均距离：
+        print("簇 %s (平均类内距离: %.4f):" % (label, avg_distance))
+        cluster_sentences  =  sentence_label_dict [ label ]
+        for i in range(min(10, len(clu​​ster_sentences))): # 随便打印几个，太多了不过看来
+            print ( cluster_sentences [ i ] .replace ( " " , "" ))
+        print("恐慌大小: %d" % len(clu​​ster_sentences))
+        打印（” -  -  -  - -”）
+
+
+如果 __name__ == "__main__":
+    主要的（）
+页脚
+© 2025 
