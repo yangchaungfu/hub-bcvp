@@ -45,15 +45,15 @@ class MyModel(nn.Module):
             self.encoder = BertModel.from_pretrained(r"/mnt/2T/wwk/pycharm_environment/study/google-bert/bert-base-chinese", return_dict=False)
             self.hidden_size = self.encoder.config.hidden_size
         elif model_type == "bert_lstm":
-            self.use_bert = True
+            self.usebert = True
             self.encoder = BertLSTM()
-            self.hidden_size = self.encoder.hidden_size
+            self.hidden_size = self.encoder.bert.config.hidden_size
         elif model_type == "bert_cnn":
-            self.use_bert = True
+            self.usebert = True
             self.encoder = BertCNN()
             self.hidden_size = self.encoder.bert.config.hidden_size
         elif model_type == "bert_mid_layer":
-            self.use_bert = True
+            self.usebert = True
             self.encoder = BertMidLayer()
             self.hidden_size = self.encoder.bert.config.hidden_size
         self.classifier = nn.Linear(self.hidden_size, self.class_num)
