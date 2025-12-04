@@ -1,0 +1,2 @@
+model learning_rate hidden_size acc 预测100条消耗时间 epoch
+lstm 0.001 256 0.8738 1.72s 20
