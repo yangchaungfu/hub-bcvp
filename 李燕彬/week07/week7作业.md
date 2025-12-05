@@ -196,6 +196,7 @@ label,review
 - `svm_text_classifier.py`：SVM文本分类器实现
 - `cnn_text_classifier.py`：CNN文本分类器实现
 - `lstm_text_classifier.py`：LSTM文本分类器实现
+- `text_preprocessor.py`: 文本预处理脚本，包括分词、向量化等功能
 - 各模型的forward文件：用于模型前向传播的辅助脚本
 
 ## 作业实践总结
