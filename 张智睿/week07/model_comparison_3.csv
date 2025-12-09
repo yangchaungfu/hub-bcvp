@@ -1,0 +1,4 @@
+﻿model_name,Learning_rate,hidden_size,positive_sample_size,average_text_length,negative_sample_size,Accuracy,time_to_process_100_items
+fastText,0.01,64,4000,25.05,7987,0.8849,0.0272 sec
+LSTM,0.001,128,4000,25.05,7987,0.8799,0.0510 sec
+GatedCNN,0.001,100,4000,25.05,7987,0.8649,0.0323 sec
