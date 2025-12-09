@@ -1,0 +1,159 @@
+C:\Users\Linker\miniconda3\envs\py312\python.exe D:\AI\作业\week07\model.py 
+使用设备：cpu
+成功用 gb18030 编码读取 训练集
+✅ 训练集加载完成！
+- 样本数：8996
+- 好评（1）：2999 条 (33.3%)
+- 差评（0）：5997 条 (66.7%)
+成功用 gb18030 编码读取 验证集
+✅ 验证集加载完成！
+- 样本数：2991
+- 好评（1）：1001 条 (33.5%)
+- 差评（0）：1990 条 (66.5%)
+
+============================================================
+📊 数据分析结果（训练集+验证集）
+============================================================
+
+【1. 样本分布】
+训练集：8996 条（占比 75.0%）
+  - 好评：2999 条 (33.3%)
+  - 差评：5997 条 (66.7%)
+验证集：2991 条（占比 25.0%）
+  - 好评：1001 条 (33.5%)
+  - 差评：1990 条 (66.5%)
+
+【2. 文本长度统计（中文字符数）】
+训练集：
+  - 平均长度：25.2
+  - 最大长度：463
+  - 最小长度：5
+验证集：
+  - 平均长度：24.5
+  - 最大长度：268
+  - 最小长度：5
+Building prefix dict from the default dictionary ...
+Loading model from cache C:\Users\Linker\AppData\Local\Temp\jieba.cache
+Loading model cost 1.178 seconds.
+Prefix dict has been built successfully.
+
+📖 基础模型词汇表构建完成（仅基于训练集），大小：9432
+📖 BERT词汇表加载完成，大小：21128
+
+🚀 数据加载器构建完成：
+- 训练集：8996 条（282 批次）
+- 验证集：2991 条（94 批次）
+
+🧠 模型初始化完成，共 4 种模型待对比
+
+============================================================
+开始训练模型：MLP
+============================================================
+Epoch 1 Train: 100%|██████████| 282/282 [00:19<00:00, 14.71it/s]
+Epoch 1 | Train Loss: 0.4926 | Val Loss: 0.4384 | Accuracy: 0.8215 | F1: 0.6928
+Epoch 2 Train: 100%|██████████| 282/282 [00:18<00:00, 15.65it/s]
+Epoch 2 | Train Loss: 0.3184 | Val Loss: 0.4251 | Accuracy: 0.8392 | F1: 0.7451
+Epoch 3 Train: 100%|██████████| 282/282 [00:19<00:00, 14.59it/s]
+Epoch 3 | Train Loss: 0.2231 | Val Loss: 0.4564 | Accuracy: 0.8362 | F1: 0.7429
+Epoch 4 Train: 100%|██████████| 282/282 [00:19<00:00, 14.37it/s]
+Epoch 5 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 4 | Train Loss: 0.1572 | Val Loss: 0.5230 | Accuracy: 0.8368 | F1: 0.7442
+Epoch 5 Train: 100%|██████████| 282/282 [00:19<00:00, 14.64it/s]
+Epoch 6 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 5 | Train Loss: 0.1196 | Val Loss: 0.5858 | Accuracy: 0.8405 | F1: 0.7472
+Epoch 6 Train: 100%|██████████| 282/282 [00:19<00:00, 14.63it/s]
+Epoch 7 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 6 | Train Loss: 0.0934 | Val Loss: 0.6393 | Accuracy: 0.8352 | F1: 0.7431
+Epoch 7 Train: 100%|██████████| 282/282 [00:19<00:00, 14.60it/s]
+Epoch 8 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 7 | Train Loss: 0.0771 | Val Loss: 0.7227 | Accuracy: 0.8345 | F1: 0.7374
+Epoch 8 Train: 100%|██████████| 282/282 [00:19<00:00, 14.83it/s]
+Epoch 8 | Train Loss: 0.0643 | Val Loss: 0.7365 | Accuracy: 0.8399 | F1: 0.7488
+Epoch 9 Train: 100%|██████████| 282/282 [00:19<00:00, 14.58it/s]
+Epoch 9 | Train Loss: 0.0507 | Val Loss: 0.8308 | Accuracy: 0.8399 | F1: 0.7467
+Epoch 10 Train: 100%|██████████| 282/282 [00:18<00:00, 14.97it/s]
+Epoch 10 | Train Loss: 0.0434 | Val Loss: 0.9113 | Accuracy: 0.8445 | F1: 0.7496
+
+============================================================
+开始训练模型：CNN
+============================================================
+Epoch 1 Train: 100%|██████████| 282/282 [01:24<00:00,  3.36it/s]
+Epoch 2 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 1 | Train Loss: 0.4625 | Val Loss: 0.3719 | Accuracy: 0.8442 | F1: 0.7272
+Epoch 2 Train: 100%|██████████| 282/282 [01:33<00:00,  3.03it/s]
+Epoch 3 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 2 | Train Loss: 0.3276 | Val Loss: 0.3326 | Accuracy: 0.8676 | F1: 0.7859
+Epoch 3 Train: 100%|██████████| 282/282 [01:22<00:00,  3.43it/s]
+Epoch 4 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 3 | Train Loss: 0.2701 | Val Loss: 0.3404 | Accuracy: 0.8733 | F1: 0.8043
+Epoch 4 Train: 100%|██████████| 282/282 [01:36<00:00,  2.91it/s]
+Epoch 4 | Train Loss: 0.2267 | Val Loss: 0.3595 | Accuracy: 0.8730 | F1: 0.7955
+Epoch 5 Train: 100%|██████████| 282/282 [01:22<00:00,  3.40it/s]
+Epoch 6 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 5 | Train Loss: 0.1832 | Val Loss: 0.3878 | Accuracy: 0.8689 | F1: 0.7876
+Epoch 6 Train: 100%|██████████| 282/282 [01:28<00:00,  3.17it/s]
+Epoch 6 | Train Loss: 0.1486 | Val Loss: 0.4411 | Accuracy: 0.8633 | F1: 0.7727
+Epoch 7 Train: 100%|██████████| 282/282 [01:24<00:00,  3.35it/s]
+Epoch 8 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 7 | Train Loss: 0.1324 | Val Loss: 0.4568 | Accuracy: 0.8579 | F1: 0.7736
+Epoch 8 Train: 100%|██████████| 282/282 [01:26<00:00,  3.26it/s]
+Epoch 8 | Train Loss: 0.1050 | Val Loss: 0.4890 | Accuracy: 0.8556 | F1: 0.7771
+Epoch 9 Train: 100%|██████████| 282/282 [01:26<00:00,  3.27it/s]
+Epoch 9 | Train Loss: 0.0941 | Val Loss: 0.5760 | Accuracy: 0.8539 | F1: 0.7552
+Epoch 10 Train: 100%|██████████| 282/282 [01:23<00:00,  3.37it/s]
+Epoch 10 | Train Loss: 0.0779 | Val Loss: 0.6190 | Accuracy: 0.8536 | F1: 0.7625
+
+============================================================
+开始训练模型：LSTM
+============================================================
+Epoch 1 Train: 100%|██████████| 282/282 [03:17<00:00,  1.43it/s]
+Epoch 1 | Train Loss: 0.4404 | Val Loss: 0.3578 | Accuracy: 0.8606 | F1: 0.7788
+Epoch 2 Train: 100%|██████████| 282/282 [02:34<00:00,  1.82it/s]
+Epoch 3 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 2 | Train Loss: 0.2857 | Val Loss: 0.3349 | Accuracy: 0.8683 | F1: 0.7975
+Epoch 3 Train: 100%|██████████| 282/282 [02:35<00:00,  1.81it/s]
+Epoch 3 | Train Loss: 0.2312 | Val Loss: 0.3381 | Accuracy: 0.8709 | F1: 0.7931
+Epoch 4 Train: 100%|██████████| 282/282 [02:33<00:00,  1.84it/s]
+Epoch 5 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 4 | Train Loss: 0.1888 | Val Loss: 0.3866 | Accuracy: 0.8679 | F1: 0.7826
+Epoch 5 Train: 100%|██████████| 282/282 [02:41<00:00,  1.74it/s]
+Epoch 6 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 5 | Train Loss: 0.2040 | Val Loss: 0.4057 | Accuracy: 0.8646 | F1: 0.7928
+Epoch 6 Train: 100%|██████████| 282/282 [02:31<00:00,  1.87it/s]
+Epoch 7 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 6 | Train Loss: 0.1453 | Val Loss: 0.4308 | Accuracy: 0.8569 | F1: 0.7780
+Epoch 7 Train: 100%|██████████| 282/282 [02:27<00:00,  1.92it/s]
+Epoch 8 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 7 | Train Loss: 0.1194 | Val Loss: 0.4638 | Accuracy: 0.8385 | F1: 0.7692
+Epoch 8 Train: 100%|██████████| 282/282 [02:20<00:00,  2.01it/s]
+Epoch 9 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 8 | Train Loss: 0.1034 | Val Loss: 0.4932 | Accuracy: 0.8482 | F1: 0.7735
+Epoch 9 Train: 100%|██████████| 282/282 [02:20<00:00,  2.00it/s]
+Epoch 9 | Train Loss: 0.0810 | Val Loss: 0.5833 | Accuracy: 0.8489 | F1: 0.7616
+Epoch 10 Train: 100%|██████████| 282/282 [02:21<00:00,  2.00it/s]
+Epoch 1 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 10 | Train Loss: 0.0646 | Val Loss: 0.6461 | Accuracy: 0.8495 | F1: 0.7565
+
+============================================================
+开始训练模型：GRU
+============================================================
+Epoch 1 Train: 100%|██████████| 282/282 [05:15<00:00,  1.12s/it]
+Epoch 1 | Train Loss: 0.4462 | Val Loss: 0.3391 | Accuracy: 0.8656 | F1: 0.7836
+Epoch 2 Train: 100%|██████████| 282/282 [04:32<00:00,  1.03it/s]
+Epoch 2 | Train Loss: 0.2953 | Val Loss: 0.3324 | Accuracy: 0.8663 | F1: 0.7942
+Epoch 3 Train: 100%|██████████| 282/282 [04:18<00:00,  1.09it/s]
+Epoch 3 | Train Loss: 0.2353 | Val Loss: 0.3368 | Accuracy: 0.8689 | F1: 0.7839
+Epoch 4 Train: 100%|██████████| 282/282 [04:26<00:00,  1.06it/s]
+Epoch 5 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 4 | Train Loss: 0.1938 | Val Loss: 0.3535 | Accuracy: 0.8673 | F1: 0.7876
+Epoch 5 Train: 100%|██████████| 282/282 [04:22<00:00,  1.07it/s]
+Epoch 6 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 5 | Train Loss: 0.1574 | Val Loss: 0.3832 | Accuracy: 0.8629 | F1: 0.7791
+Epoch 6 Train: 100%|██████████| 282/282 [04:41<00:00,  1.00it/s]
+Epoch 7 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 6 | Train Loss: 0.1292 | Val Loss: 0.4122 | Accuracy: 0.8629 | F1: 0.7800
+Epoch 7 Train: 100%|██████████| 282/282 [04:26<00:00,  1.06it/s]
+Epoch 7 | Train Loss: 0.1067 | Val Loss: 0.4880 | Accuracy: 0.8582 | F1: 0.7720
+Epoch 8 Train: 100%|██████████| 282/282 [04:36<00:00,  1.02it/s]
+Epoch 9 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 8 | Train Loss: 0.0847 | Val Loss: 0.5441 | Accuracy: 0.8546 | F1: 0.7709
+Epoch 9 Train: 100%|██████████| 282/282 [04:29<00:00,  1.05it/s]
+Epoch 10 Train:   0%|          | 0/282 [00:00<?, ?it/s]Epoch 9 | Train Loss: 0.0761 | Val Loss: 0.6113 | Accuracy: 0.8469 | F1: 0.7551
+Epoch 10 Train: 100%|██████████| 282/282 [04:18<00:00,  1.09it/s]
+Epoch 10 | Train Loss: 0.0662 | Val Loss: 0.6122 | Accuracy: 0.8536 | F1: 0.7643
+
+================================================================================
+🏆 模型对比结果汇总（按F1分数排序）
+================================================================================
+   模型名称    验证损失  准确率(Acc)  精确率(Prec)  召回率(Rec)    F1分数  平均推理时间(ms/条)
+1   CNN  0.3404    0.8733     0.8323    0.7782  0.8043        2.7890
+2  LSTM  0.3349    0.8683     0.8212    0.7752  0.7975        1.8896
+3   GRU  0.3324    0.8663     0.8187    0.7712  0.7942        4.8297
+0   MLP  0.9113    0.8445     0.8131    0.6953  0.7496        0.1366
+
+📁 结果文件已保存：
+- 对比表格：model_comparison_with_bert.csv（可直接导入Excel）
+- 可视化图：model_comparison_with_bert_plots.png
+- 数据分析图：data_analysis.png
+
+Process finished with exit code 0
