@@ -1,0 +1,315 @@
+model.py----------------------------------------------------------------
+
+
+# -*- coding: utf-8 -*-
+
+import torch
+import torch.nn as nn
+from torch.optim import Adam, SGD
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
+
+
+class SentenceEncoder(nn.Module):
+    def __init__(self, config):
+        super(SentenceEncoder, self).__init__()
+        hidden_size = config["hidden_size"]
+        vocab_size = config["vocab_size"] + 1
+        self.embedding = nn.Embedding(vocab_size, hidden_size, padding_idx=0)
+        self.layer = nn.Linear(hidden_size, hidden_size)
+        self.dropout = nn.Dropout(0.5)
+
+    def forward(self, x):
+        x = self.embedding(x)  # (batch_size, max_len, hidden_size)
+        x = self.layer(x)      # 线性变换
+        x = self.dropout(x)
+        # 最大池化获取句子向量
+        x = nn.functional.max_pool1d(x.transpose(1, 2), x.shape[1]).squeeze()
+        return x
+
+
+class SiameseNetwork(nn.Module):
+    def __init__(self, config):
+        super(SiameseNetwork, self).__init__()
+        self.sentence_encoder = SentenceEncoder(config)
+        self.cosine_loss = nn.CosineEmbeddingLoss()  # 保留余弦损失用于对比
+
+    def cosine_distance(self, tensor1, tensor2):
+        """计算余弦距离 (1 - 余弦相似度)"""
+        tensor1 = torch.nn.functional.normalize(tensor1, dim=-1)
+        tensor2 = torch.nn.functional.normalize(tensor2, dim=-1)
+        cosine = torch.sum(torch.mul(tensor1, tensor2), axis=-1)
+        return 1 - cosine
+
+    def triplet_loss(self, anchor, positive, negative, margin=0.5):
+        """三元组损失: 使anchor与positive的距离小于anchor与negative的距离"""
+        ap_distance = self.cosine_distance(anchor, positive)
+        an_distance = self.cosine_distance(anchor, negative)
+        # 损失 = max(0, ap距离 - an距离 + margin)
+        loss = torch.mean(torch.max(torch.zeros_like(ap_distance), ap_distance - an_distance + margin))
+        return loss
+
+    def forward(self, anchor, positive=None, negative=None, target=None):
+        # 三元组训练模式
+        if positive is not None and negative is not None:
+            a = self.sentence_encoder(anchor)
+            p = self.sentence_encoder(positive)
+            n = self.sentence_encoder(negative)
+            return self.triplet_loss(a, p, n)
+        
+        # 成对比较模式（用于评估和预测）
+        if positive is not None:
+            vector1 = self.sentence_encoder(anchor)
+            vector2 = self.sentence_encoder(positive)
+            if target is not None:
+                return self.cosine_loss(vector1, vector2, target.squeeze())
+            else:
+                return self.cosine_distance(vector1, vector2)
+        
+        # 单独编码句子（用于生成向量）
+        return self.sentence_encoder(anchor)
+
+
+def choose_optimizer(config, model):
+    optimizer = config["optimizer"]
+    learning_rate = config["learning_rate"]
+    if optimizer == "adam":
+        return Adam(model.parameters(), lr=learning_rate)
+    elif optimizer == "sgd":
+        return SGD(model.parameters(), lr=learning_rate)
+
+
+if __name__ == "__main__":
+    from config import Config
+    Config["vocab_size"] = 1000
+    model = SiameseNetwork(Config)
+    # 测试三元组输入
+    a = torch.LongTensor([[1,2,3,0], [2,2,0,0]])
+    p = torch.LongTensor([[1,2,3,4], [2,2,3,0]])
+    n = torch.LongTensor([[5,6,7,8], [9,8,7,0]])
+    loss = model(a, p, n)
+    print("Triplet loss:", loss.item())
+
+loader.py---------------------------------------------------------------------------
+
+# -*- coding: utf-8 -*-
+
+import json
+import re
+import os
+import torch
+import random
+import jieba
+import numpy as np
+from torch.utils.data import Dataset, DataLoader
+from collections import defaultdict
+"""
+数据加载
+"""
+
+
+class DataGenerator:
+    def __init__(self, data_path, config):
+        self.config = config
+        self.path = data_path
+        self.vocab = load_vocab(config["vocab_path"])
+        self.config["vocab_size"] = len(self.vocab)
+        self.schema = load_schema(config["schema_path"])
+        self.train_data_size = config["epoch_data_size"]
+        self.data_type = None  # "train" or "test"
+        self.load()
+
+    def load(self):
+        self.data = []
+        self.knwb = defaultdict(list)  # 标准问题到其所有表述的映射
+        with open(self.path, encoding="utf8") as f:
+            for line in f:
+                line = json.loads(line)
+                if isinstance(line, dict):  # 训练集
+                    self.data_type = "train"
+                    questions = line["questions"]
+                    label = line["target"]
+                    for question in questions:
+                        input_id = self.encode_sentence(question)
+                        input_id = torch.LongTensor(input_id)
+                        self.knwb[self.schema[label]].append(input_id)
+                else:  # 测试集
+                    self.data_type = "test"
+                    assert isinstance(line, list)
+                    question, label = line
+                    input_id = self.encode_sentence(question)
+                    input_id = torch.LongTensor(input_id)
+                    label_index = torch.LongTensor([self.schema[label]])
+                    self.data.append([input_id, label_index])
+        return
+
+    def encode_sentence(self, text):
+        input_id = []
+        if self.config["vocab_path"] == "words.txt":
+            for word in jieba.cut(text):
+                input_id.append(self.vocab.get(word, self.vocab["[UNK]"]))
+        else:
+            for char in text:
+                input_id.append(self.vocab.get(char, self.vocab["[UNK]"]))
+        input_id = self.padding(input_id)
+        return input_id
+
+    def padding(self, input_id):
+        input_id = input_id[:self.config["max_length"]]
+        input_id += [0] * (self.config["max_length"] - len(input_id))
+        return input_id
+
+    def __len__(self):
+        if self.data_type == "train":
+            return self.config["epoch_data_size"]
+        else:
+            return len(self.data)
+
+    def __getitem__(self, index):
+        if self.data_type == "train":
+            return self.generate_triplet()  # 生成三元组
+        else:
+            return self.data[index]
+
+    def generate_triplet(self):
+        """生成三元组 (anchor, positive, negative)"""
+        standard_questions = list(self.knwb.keys())
+        if len(standard_questions) < 2:
+            raise ValueError("至少需要两个不同的标准问题才能生成三元组")
+
+        # 选择锚点和正样本的标准问题
+        anchor_label = random.choice(standard_questions)
+        # 确保该标准问题有足够的样本
+        if len(self.knwb[anchor_label]) < 2:
+            return self.generate_triplet()
+        
+        # 从同一标准问题中选择锚点和正样本
+        anchor, positive = random.sample(self.knwb[anchor_label], 2)
+
+        # 选择负样本的标准问题（与锚点不同）
+        negative_label = random.choice(
+            [label for label in standard_questions if label != anchor_label]
+        )
+        negative = random.choice(self.knwb[negative_label])
+
+        return [anchor, positive, negative]
+
+
+def load_vocab(vocab_path):
+    token_dict = {}
+    with open(vocab_path, encoding="utf8") as f:
+        for index, line in enumerate(f):
+            token = line.strip()
+            token_dict[token] = index + 1  # 0留给padding
+    return token_dict
+
+
+def load_schema(schema_path):
+    with open(schema_path, encoding="utf8") as f:
+        return json.loads(f.read())
+
+
+def load_data(data_path, config, shuffle=True):
+    dg = DataGenerator(data_path, config)
+    dl = DataLoader(dg, batch_size=config["batch_size"], shuffle=shuffle)
+    return dl
+
+
+if __name__ == "__main__":
+    from config import Config
+    dg = DataGenerator("../data/train.json", Config)
+    print(dg[0])  # 测试三元组生成
+
+main.py-----------------------------------------------------------------------------------
+
+# -*- coding: utf-8 -*-
+
+import torch
+import os
+import random
+import numpy as np
+import logging
+from config import Config
+from model import SiameseNetwork, choose_optimizer
+from evaluate import Evaluator
+from loader import load_data
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+
+def main(config):
+    # 创建模型保存目录
+    if not os.path.isdir(config["model_path"]):
+        os.mkdir(config["model_path"])
+    
+    # 加载数据
+    train_data = load_data(config["train_data_path"], config)
+    
+    # 初始化模型
+    model = SiameseNetwork(config)
+    cuda_flag = torch.cuda.is_available()
+    if cuda_flag:
+        logger.info("使用GPU训练")
+        model = model.cuda()
+    
+    # 优化器
+    optimizer = choose_optimizer(config, model)
+    
+    # 评估器
+    evaluator = Evaluator(config, model, logger)
+    
+    # 训练循环
+    for epoch in range(config["epoch"]):
+        epoch += 1
+        model.train()
+        logger.info(f"第{epoch}轮训练开始")
+        train_loss = []
+        
+        for batch_idx, batch_data in enumerate(train_data):
+            optimizer.zero_grad()
+            
+            # 三元组数据：anchor, positive, negative
+            if cuda_flag:
+                batch_data = [d.cuda() for d in batch_data]
+            anchor, positive, negative = batch_data
+            
+            # 计算三元组损失
+            loss = model(anchor, positive, negative)
+            train_loss.append(loss.item())
+            
+            # 反向传播
+            loss.backward()
+            optimizer.step()
+            
+            # 打印中间结果
+            if batch_idx % 100 == 0:
+                logger.info(f"批次 {batch_idx}/{len(train_data)}, 损失: {loss.item():.4f}")
+        
+        #  epoch 损失统计
+        avg_loss = np.mean(train_loss)
+        logger.info(f"第{epoch}轮平均损失: {avg_loss:.4f}")
+        
+        # 每轮结束后评估
+        evaluator.eval(epoch)
+        
+        # 保存模型
+        model_path = os.path.join(config["model_path"], f"epoch_{epoch}.pth")
+        torch.save(model.state_dict(), model_path)
+    
+    logger.info("训练完成")
+    return
+
+
+if __name__ == "__main__":
+    # 固定随机种子以保证可复现性
+    torch.manual_seed(1234)
+    random.seed(1234)
+    np.random.seed(1234)
+    main(Config)
+
+
+
+
+
+
+
