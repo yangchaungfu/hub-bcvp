@@ -1,0 +1,121 @@
+2025-12-10 15:10:37,834 - main.py - INFO - 准备训练模型LSTM_1，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'LSTM_1', 'model_type': 'LSTM', 'train_type': 'Siam', 'matching_type': 'cosine', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 128, 'out_channels': 128, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:10:38,707 - main.py - INFO - ====开始训练模型LSTM_1====
+2025-12-10 15:10:39,777 - main.py - INFO - 第1轮训练，平均loss值为：0.403034
+2025-12-10 15:10:40,771 - main.py - INFO - 第2轮训练，平均loss值为：0.228830
+2025-12-10 15:10:41,773 - main.py - INFO - 第3轮训练，平均loss值为：0.182103
+2025-12-10 15:10:42,768 - main.py - INFO - 第4轮训练，平均loss值为：0.152198
+2025-12-10 15:10:43,771 - main.py - INFO - 第5轮训练，平均loss值为：0.135958
+2025-12-10 15:10:44,991 - main.py - INFO - 准备训练模型LSTM_2，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'LSTM_2', 'model_type': 'LSTM', 'train_type': 'Siam', 'matching_type': 'cosine', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 256, 'out_channels': 128, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:10:45,911 - main.py - INFO - ====开始训练模型LSTM_2====
+2025-12-10 15:10:48,346 - main.py - INFO - 第1轮训练，平均loss值为：0.364555
+2025-12-10 15:10:50,842 - main.py - INFO - 第2轮训练，平均loss值为：0.183120
+2025-12-10 15:10:53,330 - main.py - INFO - 第3轮训练，平均loss值为：0.124161
+2025-12-10 15:10:55,797 - main.py - INFO - 第4轮训练，平均loss值为：0.091836
+2025-12-10 15:10:58,287 - main.py - INFO - 第5轮训练，平均loss值为：0.062570
+2025-12-10 15:11:00,404 - main.py - INFO - 准备训练模型TextCNN_1，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'TextCNN_1', 'model_type': 'TextCNN', 'train_type': 'Siam', 'matching_type': 'cosine', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 128, 'out_channels': 128, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:11:01,264 - main.py - INFO - ====开始训练模型TextCNN_1====
+2025-12-10 15:11:02,075 - main.py - INFO - 第1轮训练，平均loss值为：0.460680
+2025-12-10 15:11:02,822 - main.py - INFO - 第2轮训练，平均loss值为：0.431308
+2025-12-10 15:11:03,577 - main.py - INFO - 第3轮训练，平均loss值为：0.319298
+2025-12-10 15:11:04,343 - main.py - INFO - 第4轮训练，平均loss值为：0.273741
+2025-12-10 15:11:05,082 - main.py - INFO - 第5轮训练，平均loss值为：0.245098
+2025-12-10 15:11:06,103 - main.py - INFO - 准备训练模型TextCNN_2，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'TextCNN_2', 'model_type': 'TextCNN', 'train_type': 'Siam', 'matching_type': 'cosine', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 128, 'out_channels': 256, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:11:06,988 - main.py - INFO - ====开始训练模型TextCNN_2====
+2025-12-10 15:11:07,935 - main.py - INFO - 第1轮训练，平均loss值为：0.443061
+2025-12-10 15:11:08,877 - main.py - INFO - 第2轮训练，平均loss值为：0.341639
+2025-12-10 15:11:09,818 - main.py - INFO - 第3轮训练，平均loss值为：0.250322
+2025-12-10 15:11:10,768 - main.py - INFO - 第4轮训练，平均loss值为：0.260665
+2025-12-10 15:11:11,707 - main.py - INFO - 第5轮训练，平均loss值为：0.213416
+2025-12-10 15:11:13,034 - main.py - INFO - 准备训练模型TextCNN_3，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'TextCNN_3', 'model_type': 'TextCNN', 'train_type': 'Siam', 'matching_type': 'cosine', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 256, 'out_channels': 128, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:11:13,952 - main.py - INFO - ====开始训练模型TextCNN_3====
+2025-12-10 15:11:15,351 - main.py - INFO - 第1轮训练，平均loss值为：0.487656
+2025-12-10 15:11:16,722 - main.py - INFO - 第2轮训练，平均loss值为：0.416657
+2025-12-10 15:11:18,092 - main.py - INFO - 第3轮训练，平均loss值为：0.295077
+2025-12-10 15:11:19,458 - main.py - INFO - 第4轮训练，平均loss值为：0.249267
+2025-12-10 15:11:20,833 - main.py - INFO - 第5轮训练，平均loss值为：0.199331
+2025-12-10 15:11:21,968 - main.py - INFO - 准备训练模型TextCNN_4，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'TextCNN_4', 'model_type': 'TextCNN', 'train_type': 'Siam', 'matching_type': 'cosine', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 256, 'out_channels': 256, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:11:22,874 - main.py - INFO - ====开始训练模型TextCNN_4====
+2025-12-10 15:11:24,579 - main.py - INFO - 第1轮训练，平均loss值为：0.485294
+2025-12-10 15:11:26,275 - main.py - INFO - 第2轮训练，平均loss值为：0.292924
+2025-12-10 15:11:27,984 - main.py - INFO - 第3轮训练，平均loss值为：0.244917
+2025-12-10 15:11:29,708 - main.py - INFO - 第4轮训练，平均loss值为：0.215341
+2025-12-10 15:11:31,393 - main.py - INFO - 第5轮训练，平均loss值为：0.203299
+2025-12-10 15:11:32,845 - main.py - INFO - 准备训练模型bert_1，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_1', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 256, 'out_channels': 256, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:11:35,205 - main.py - INFO - ====开始训练模型bert_1====
+2025-12-10 15:12:43,381 - main.py - INFO - 第1轮训练，平均loss值为：0.790472
+2025-12-10 15:13:53,105 - main.py - INFO - 第2轮训练，平均loss值为：0.765259
+2025-12-10 15:15:02,760 - main.py - INFO - 第3轮训练，平均loss值为：0.741459
+2025-12-10 15:16:12,929 - main.py - INFO - 第4轮训练，平均loss值为：0.740764
+2025-12-10 15:17:23,165 - main.py - INFO - 第5轮训练，平均loss值为：0.779193
+2025-12-10 15:18:20,745 - main.py - INFO - 准备训练模型bert_2，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_2', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 1, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 256, 'out_channels': 256, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:18:25,339 - main.py - INFO - ====开始训练模型bert_2====
+2025-12-10 15:19:37,928 - main.py - INFO - 第1轮训练，平均loss值为：0.715574
+2025-12-10 15:20:50,513 - main.py - INFO - 第2轮训练，平均loss值为：0.751914
+2025-12-10 15:22:05,668 - main.py - INFO - 第3轮训练，平均loss值为：0.727640
+2025-12-10 15:23:19,517 - main.py - INFO - 第4轮训练，平均loss值为：0.740976
+2025-12-10 15:24:32,289 - main.py - INFO - 第5轮训练，平均loss值为：0.727957
+2025-12-10 15:25:26,816 - main.py - INFO - 准备训练模型bert_3，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_3', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 2, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 256, 'out_channels': 256, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:25:31,090 - main.py - INFO - ====开始训练模型bert_3====
+2025-12-10 15:26:44,658 - main.py - INFO - 第1轮训练，平均loss值为：0.768639
+2025-12-10 15:27:55,218 - main.py - INFO - 第2轮训练，平均loss值为：0.747674
+2025-12-10 15:29:07,052 - main.py - INFO - 第3轮训练，平均loss值为：0.756048
+2025-12-10 15:30:18,598 - main.py - INFO - 第4轮训练，平均loss值为：0.891933
+2025-12-10 15:31:30,327 - main.py - INFO - 第5轮训练，平均loss值为：0.827936
+2025-12-10 15:32:27,353 - main.py - INFO - 准备训练模型bert_4，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_4', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'cosine', 'concat_type': 2, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 256, 'out_channels': 256, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:32:32,822 - main.py - INFO - ====开始训练模型bert_4====
+2025-12-10 15:33:44,829 - main.py - INFO - 第1轮训练，平均loss值为：0.314388
+2025-12-10 15:34:58,168 - main.py - INFO - 第2轮训练，平均loss值为：0.284631
+2025-12-10 15:36:12,274 - main.py - INFO - 第3轮训练，平均loss值为：0.284694
+2025-12-10 15:37:26,269 - main.py - INFO - 第4轮训练，平均loss值为：0.284673
+2025-12-10 15:38:40,283 - main.py - INFO - 第5轮训练，平均loss值为：0.284626
+2025-12-10 15:39:37,608 - main.py - INFO - 准备训练模型bert_5，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_5', 'model_type': 'bert', 'train_type': 'Triplet', 'matching_type': 'cosine', 'concat_type': 2, 'margin': 0.1, 'num_epochs': 5, 'hidden_size': 256, 'out_channels': 256, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:39:42,664 - main.py - INFO - ====开始训练模型bert_5====
+2025-12-10 15:41:35,837 - main.py - INFO - 第1轮训练，平均loss值为：nan
+2025-12-10 15:43:25,686 - main.py - INFO - 第2轮训练，平均loss值为：nan
+2025-12-10 15:45:12,635 - main.py - INFO - 第3轮训练，平均loss值为：nan
+2025-12-10 15:46:58,758 - main.py - INFO - 第4轮训练，平均loss值为：nan
+2025-12-10 15:48:45,853 - main.py - INFO - 第5轮训练，平均loss值为：nan
+2025-12-10 15:49:42,731 - main.py - INFO - 准备训练模型bert_6，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_6', 'model_type': 'bert', 'train_type': 'Triplet', 'matching_type': 'cosine', 'concat_type': 2, 'margin': 0.2, 'num_epochs': 5, 'hidden_size': 256, 'out_channels': 256, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 15:49:47,651 - main.py - INFO - ====开始训练模型bert_6====
+2025-12-10 15:51:34,490 - main.py - INFO - 第1轮训练，平均loss值为：nan
+2025-12-10 15:53:23,476 - main.py - INFO - 第2轮训练，平均loss值为：nan
+2025-12-10 15:55:09,243 - main.py - INFO - 第3轮训练，平均loss值为：nan
+2025-12-10 15:56:56,475 - main.py - INFO - 第4轮训练，平均loss值为：nan
+2025-12-10 15:58:38,922 - main.py - INFO - 第5轮训练，平均loss值为：nan
+2025-12-10 16:04:35,491 - main.py - INFO - 准备训练模型bert_1，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_1', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 1, 'hidden_size': 256, 'out_channels': 128, 'epoch_size': 200, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 16:04:37,853 - main.py - INFO - ====开始训练模型bert_1====
+2025-12-10 16:05:05,623 - main.py - INFO - 第1轮训练，平均loss值为：0.755565
+2025-12-10 16:05:58,172 - main.py - INFO - 准备训练模型bert_2，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_2', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 1, 'margin': 0.1, 'num_epochs': 1, 'hidden_size': 256, 'out_channels': 128, 'epoch_size': 200, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 16:06:02,322 - main.py - INFO - ====开始训练模型bert_2====
+2025-12-10 16:06:29,572 - main.py - INFO - 第1轮训练，平均loss值为：0.702724
+2025-12-10 16:07:22,984 - main.py - INFO - 准备训练模型bert_3，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_3', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 2, 'margin': 0.1, 'num_epochs': 1, 'hidden_size': 256, 'out_channels': 128, 'epoch_size': 200, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 16:07:27,046 - main.py - INFO - ====开始训练模型bert_3====
+2025-12-10 16:13:45,151 - main.py - INFO - 准备训练模型bert_1，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_1', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 10, 'hidden_size': 256, 'out_channels': 128, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 16:13:47,639 - main.py - INFO - ====开始训练模型bert_1====
+2025-12-10 16:15:55,442 - main.py - INFO - 第1轮训练，平均loss值为：0.758136
+2025-12-10 16:18:11,278 - main.py - INFO - 第2轮训练，平均loss值为：0.779179
+2025-12-10 16:20:27,514 - main.py - INFO - 第3轮训练，平均loss值为：0.743276
+2025-12-10 16:22:43,847 - main.py - INFO - 第4轮训练，平均loss值为：0.762101
+2025-12-10 16:25:00,278 - main.py - INFO - 第5轮训练，平均loss值为：0.746383
+2025-12-10 16:27:16,445 - main.py - INFO - 第6轮训练，平均loss值为：0.756156
+2025-12-10 16:29:32,631 - main.py - INFO - 第7轮训练，平均loss值为：0.735169
+2025-12-10 16:31:49,279 - main.py - INFO - 第8轮训练，平均loss值为：0.795929
+2025-12-10 16:34:05,787 - main.py - INFO - 第9轮训练，平均loss值为：0.771730
+2025-12-10 16:36:22,723 - main.py - INFO - 第10轮训练，平均loss值为：0.763521
+2025-12-10 18:41:44,211 - main.py - INFO - 准备训练模型bert_1，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_1', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 10, 'hidden_size': 256, 'out_channels': 128, 'epoch_size': 500, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 18:41:47,191 - main.py - INFO - ====开始训练模型bert_1====
+2025-12-10 18:44:02,514 - main.py - INFO - 第1轮训练，平均loss值为：0.707099
+2025-12-10 18:46:17,656 - main.py - INFO - 第2轮训练，平均loss值为：0.724433
+2025-12-10 18:52:11,790 - main.py - INFO - 准备训练模型bert_1，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_1', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 10, 'hidden_size': 256, 'out_channels': 128, 'epoch_size': 200, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 18:52:13,776 - main.py - INFO - ====开始训练模型bert_1====
+2025-12-10 18:52:39,061 - main.py - INFO - 第1轮训练，平均loss值为：0.781477
+2025-12-10 19:12:35,556 - main.py - INFO - 准备训练模型bert_1，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_1', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 10, 'hidden_size': 256, 'out_channels': 128, 'epoch_size': 200, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 19:12:37,747 - main.py - INFO - ====开始训练模型bert_1====
+2025-12-10 19:21:21,109 - main.py - INFO - 准备训练模型bert_1，模型参数为：{'pretrain_model_path': './data/bert-base-chinese', 'log_base_path': './log', 'model_base_path': './model', 'train_data_path': './data/train.json', 'valid_data_path': './data/valid.json', 'schema_path': './data/schema.json', 'model_name': 'bert_1', 'model_type': 'bert', 'train_type': 'Siam', 'matching_type': 'concat', 'concat_type': 0, 'margin': 0.1, 'num_epochs': 10, 'hidden_size': 256, 'out_channels': 128, 'epoch_size': 200, 'learning_rate': 0.001, 'batch_size': 20, 'max_length': 30, 'kernel_size': 3, 'vocab_size': 21128}
+2025-12-10 19:21:23,188 - main.py - INFO - ====开始训练模型bert_1====
+2025-12-10 19:21:50,728 - main.py - INFO - 第1轮训练，平均loss值为：0.682071
+2025-12-10 19:22:21,101 - main.py - INFO - 第2轮训练，平均loss值为：0.724826
+2025-12-10 19:22:49,099 - main.py - INFO - 第3轮训练，平均loss值为：0.745371
+2025-12-10 19:23:17,474 - main.py - INFO - 第4轮训练，平均loss值为：0.770422
+2025-12-10 19:23:46,162 - main.py - INFO - 第5轮训练，平均loss值为：0.726791
+2025-12-10 19:24:14,437 - main.py - INFO - 第6轮训练，平均loss值为：0.730517
