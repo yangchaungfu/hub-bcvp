@@ -98,7 +98,6 @@ class DataGenerator:
             return [s1, s2, s3]  # (a, p, n)
 
 
-
 #加载字表或词表
 def load_vocab(vocab_path):
     token_dict = {}
@@ -120,8 +119,8 @@ def load_data(data_path, config, shuffle=True):
     return dl
 
 
-
 if __name__ == "__main__":
     from config import Config
     dg = DataGenerator("valid_tag_news.json", Config)
     print(dg[1])
+
