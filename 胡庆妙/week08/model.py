@@ -31,7 +31,7 @@ class SentenceEncoder(nn.Module):
         x = self.layer(x)
 
         # [batch_size, sentence_len, embed_size] -> [batch_size, embed_size]
-        return nn.functional.max_pool1d(x.transpose(1, 2), x.shape[1]).squeeze(-1)  # x.shape[1] 表示以语句长度作为池化窗口
+        return nn.functional.max_pool1d(x.transpose(1, 2), x.shape[1]).squeeze(-1)
 
 
 class SiameseNetwork(nn.Module):
@@ -81,14 +81,14 @@ class SiameseNetwork(nn.Module):
     def forward(self, sentence_a, sentence_p=None, sentence_n=None):
         # 同时传入三个句子
         if sentence_n is not None:
-            vector_a = self.sentence_encoder(sentence_a)  # [batch_size, sen_len] -> [batch_size, embed_size]
+            vector_a = self.sentence_encoder(sentence_a)
             vector_p = self.sentence_encoder(sentence_p)
             vector_n = self.sentence_encoder(sentence_n)
             return self.loss(vector_a, vector_p, vector_n)  # 标量
 
         # 单独传入一个句子时，认为正在使用向量化能力
         elif sentence_p is None and sentence_n is None:
-            return self.sentence_encoder(sentence_a)  # [batch_size, sen_len] -> [batch_size, embed_size]
+            return self.sentence_encoder(sentence_a)
 
 
 def choose_optimizer(config, model):
@@ -106,9 +106,9 @@ if __name__ == "__main__":
     Config["vocab_size"] = 10
     Config["sentence_len"] = 4
     model = SiameseNetwork(Config)
-    s1 = torch.LongTensor([[1, 2, 3, 0], [2, 2, 0, 0]])
-    s2 = torch.LongTensor([[1, 2, 3, 4], [3, 2, 3, 4]])
-    l = torch.LongTensor([[1], [0]])
-    y = model(s1, s2, l)
+    a = torch.LongTensor([[1, 2, 3, 0], [2, 2, 0, 0]])
+    p = torch.LongTensor([[1, 2, 3, 0], [2, 2, 0, 0]])
+    n = torch.LongTensor([[1, 2, 3, 4], [3, 2, 3, 4]])
+    y = model(a, p, n)
     print(y)
     # print(model.state_dict())
