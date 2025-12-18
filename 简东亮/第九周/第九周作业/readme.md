@@ -1,4 +1,4 @@
-### week09 使用BERT进行实体识别（NER）任务
+### 第九周 使用BERT进行NER任务
 1. `loader.py`：直接使用bert模型的词表`vocab.txt`对输入文本进行逐字符编码，保证输入文本和输出标签序列等长
 2 .  ` model.py ` : 将lstm模型层替换为bert模型层
 3. `config.py`：训练配置参数，主要调节了`batch_size`、`learning_rate`和`use_crf`这3个参数
