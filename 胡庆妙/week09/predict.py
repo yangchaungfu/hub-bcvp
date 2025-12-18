@@ -5,6 +5,7 @@ import jieba
 from config import Config
 from model import TorchModel
 from loader import load_vocab
+from loader import load_data
 
 """
 模型的测试、应用
@@ -62,43 +63,29 @@ class Predictor:
             标注后的本文: 如：他是{彭德怀/PERSON}
         """
         labels = "".join([str(x) for x in labels])
-        print("\tlabels: ", labels)
-        labeled_sentence = ""
+        # print("\tlabels: ", labels)
+        output = ""
         idx = 0
-        for segment in re.finditer("(04+)", labels):
-            s, e = segment.span()  # 匹配到的子字符串的起始和结束位置
-            labeled_sentence += sentence[idx:s] + "{" + sentence[s:e] + "/LOCATION}"  # 在原文中添加标记
+        while idx < len(labels):
+            labels = labels[idx:]
+            sentence = sentence[idx:]
+            match = re.search("(04+)|(15+)|(26+)|(37+)", labels)
+            if match is None:
+                break
+            first_match = match.group()  # 获取第一个匹配的字符串
+            s, e = match.span()  # 匹配到的子字符串的起始和结束位置
+            # print(" >>", sentence, labels, s, e)
+            if re.fullmatch(r'(04+)', first_match):
+                output += sentence[:s] + " {" + sentence[s:e] + "/LOCATION} "
+            elif re.fullmatch(r'(15+)', first_match):
+                output += sentence[:s] + " {" + sentence[s:e] + "/ORGANIZATION} "
+            elif re.fullmatch(r'(26+)', first_match):
+                output += sentence[:s] + " {" + sentence[s:e] + "/PERSON} "
+            elif re.fullmatch(r'(37+)', first_match):
+                output += sentence[:s] + " {" + sentence[s:e] + "/TIME} "
             idx = e
-        labeled_sentence += sentence[idx:]
-        sentence = labeled_sentence
-
-        labeled_sentence = ""
-        idx = 0
-        for segment in re.finditer("(15+)", labels):
-            s, e = segment.span()
-            labeled_sentence += sentence[idx:s] + "{" + sentence[s:e] + "/ORGANIZATION}"
-            idx = e
-        labeled_sentence += sentence[idx:]
-        sentence = labeled_sentence
-
-        labeled_sentence = ""
-        idx = 0
-        for segment in re.finditer("(26+)", labels):
-            s, e = segment.span()
-            labeled_sentence += sentence[idx:s] + "{" + sentence[s:e] + "/PERSON}"
-            idx = e
-        labeled_sentence += sentence[idx:]
-        sentence = labeled_sentence
-
-        labeled_sentence = ""
-        idx = 0
-        for segment in re.finditer("(37+)", labels):
-            s, e = segment.span()
-            labeled_sentence += sentence[idx:s] + "{" + sentence[s:e] + "/TIME}"
-            idx = e
-        labeled_sentence += sentence[idx:]
-
-        return labeled_sentence
+        output += sentence[idx:]
+        return output
 
 
 if __name__ == "__main__":
@@ -109,7 +96,15 @@ if __name__ == "__main__":
 
     pd = Predictor(Config, vocab, model)
     input_text = ("建设海南自由贸易港的战略目标，就是要把海南自由贸易港打造成为引领我国新时代对外开放的重要门户。"
-                "2025年11月6日，习近平总书记在海南省三亚市听取海南自由贸易港建设工作汇报并发表重要讲话。")
+                  "2025年11月6日，习近平总书记在海南省三亚市听取海南自由贸易港建设工作汇报并发表重要讲话。")
     print(">>", input_text)
     res = pd.predict(input_text)
     print("<<", res)
+    print("------------------------------------")
+
+    test_data = load_data(Config["test_data_path"], Config, vocab, shuffle=False)
+    for sentence in test_data.dataset.sentences[:10]:
+        print(">>", sentence)
+        res = pd.predict(sentence)
+        print("<<", res)
+        print("------------------------------------")
