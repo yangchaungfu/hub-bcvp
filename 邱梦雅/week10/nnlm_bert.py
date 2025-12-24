@@ -39,7 +39,6 @@ def get_pad_mask(seq, pad_idx):
     # eg. (64, 10) -> (64, 1, 10)
     return (seq != pad_idx).unsqueeze(-2)
 
-
 def get_subsequent_mask(seq):
     '''
     示例：如果len_s=4，最终会得到：
@@ -59,6 +58,7 @@ class LanguageModel(nn.Module):
         # self.embedding = nn.Embedding(len(vocab), input_dim)
         # self.layer = nn.LSTM(input_dim, input_dim, num_layers=1, batch_first=True)
         self.encoder = BertModel.from_pretrained(r"D:\pretrain_models\bert-base-chinese")
+        # self.pad_token_id = self.encoder.config.pad_token_id
         self.pad_token_id = vocab["[PAD]"]
         self.classify = nn.Linear(input_dim, len(vocab))
         self.dropout = nn.Dropout(0.1)
@@ -69,8 +69,7 @@ class LanguageModel(nn.Module):
         # x = self.embedding(x)       #output shape:(batch_size, sen_len, input_dim)
         # x, _ = self.layer(x)        #output shape:(batch_size, sen_len, input_dim)  _.shape: 元组 (1, batch_size, input_dim), (1, batch_size, input_dim)
 
-        # output shape:(batch_size, seq_len, seq_len)
-        attention_mask = get_pad_mask(x, self.pad_token_id) & get_subsequent_mask(x)
+        attention_mask = get_pad_mask(x, self.pad_token_id) & get_subsequent_mask(x)  # output shape:(batch_size, seq_len, seq_len)
         x = self.encoder(x, attention_mask=attention_mask)[0]    #output shape:(batch_size, sen_len, input_dim)
         y_pred = self.classify(x)   #output shape:(batch_size, sen_len, vocab_size)
         if y is not None:
