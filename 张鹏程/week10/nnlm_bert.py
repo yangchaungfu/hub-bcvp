@@ -22,8 +22,8 @@ class LanguageModel(nn.Module):
         # self.layer = nn.LSTM(input_dim, input_dim, num_layers=1, batch_first=True)
 
         self.bert = BertModel.from_pretrained(PRETRAIN_MODEL_PATH)
-        hidden_size = self.bert.config.hidden_size
         # BERT的隐藏层维度是768，需要适配到input_dim
+        hidden_size = self.bert.config.hidden_size
         self.bert_proj = nn.Linear(hidden_size, input_dim)  # if hidden_size != input_dim else nn.Identity()
 
         self.classify = nn.Linear(input_dim, vocab_size)
