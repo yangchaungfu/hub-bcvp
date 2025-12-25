@@ -163,8 +163,8 @@ def train(corpus_path, save_weight=True):
             optim.step()         #更新权重
             watch_loss.append(loss.item())
         print("=========\n第%d轮平均loss:%f" % (epoch + 1, np.mean(watch_loss)))
-        print(generate_sentence("让他在半年之前，就不能做出", model, vocab, window_size))
-        print(generate_sentence("李慕站在山路上，深深的呼吸", model, vocab, window_size))
+        print(generate_sentence("让他在半年之前，就不能做出", model, window_size))
+        print(generate_sentence("李慕站在山路上，深深的呼吸", model, window_size))
     if not save_weight:
         return
     else:
