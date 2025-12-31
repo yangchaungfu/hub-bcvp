@@ -27,7 +27,7 @@ handler = logging.FileHandler(log_path, encoding="utf-8", mode="w")
 logger.addHandler(handler)
 
 class LanguageModel(nn.Module):
-    def __init__(self, input_dim, vocab, mask_plot=True):
+    def __init__(self, input_dim, vocab, mask_plot=False):
         super(LanguageModel, self).__init__()
         # self.embedding = nn.Embedding(len(vocab), input_dim)
         # self.layer = nn.LSTM(input_dim, input_dim, num_layers=1, batch_first=True)
@@ -300,3 +300,4 @@ def train(data_path, save_weight=True):
 if __name__ == "__main__":
     # build_vocab_from_corpus("corpus/all.txt")
     train("sample_data.json", True)
+
