@@ -1,0 +1,20 @@
+Config = {
+    "model_path": "output",
+    "train_data_path": "../../文本分类练习.csv",
+    "valid_data_path": "../../文本分类练习.csv",
+    "train_ratio": 0.8,
+    "vocab_path": "../chars.txt",
+    "model_type": "rnn",
+    "max_length": 30,
+    "hidden_size": 256,
+    "kernel_size": 3,
+    "num_layers": 2,
+    "epoch": 15,
+    "batch_size": 128,
+    "pooling_style": "max",
+    "optimizer": "adam",
+    "learning_rate": 1e-3,
+    "pretrain_model_path": r"C:\Users\24581\.cache\modelscope\hub\models\google-bert\bert-base-chinese",
+    "result_path": "output/model_comparisoin_results.csv",
+    "seed": 987
+}

@@ -1,0 +1,5 @@
+model learning_rate hidden_size acc 预测100条消耗时间 epoch
+lstm 0.001 256 0.8738 1.72s 20
+gated_cnn 0.01 256 0.8749 0.23s 2
+cnn 0.01 256 0.8448 0.14s 2
+fast_text 0.01 256 0.8834 0.037s 2
