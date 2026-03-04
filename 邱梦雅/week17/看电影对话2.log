@@ -1,0 +1,34 @@
+
+{'#服装类型#': {'query': '您想买长袖、短袖还是半截袖', 'values': '长袖|短袖|半截袖'}, '#服装颜色#': {'query': '您喜欢什么颜色', 'values': '红|橙|黄|绿|青|蓝|紫'}, '#服装尺寸#': {'query': '您想要多尺寸', 'values': 's|m|l|xl|xxl'}, '#分期付款期数#': {'query': '您想分多少期，可以有3期，6期，9期，12期', 'values': '3|6|9|12'}, '#支付方式#': {'query': '您想使用什么支付方式', 'values': '信用卡|支付宝|微信'}, '#电影名称#': {'query': '你想看什么电影', 'values': '流浪地球|浪浪山小妖怪'}, '#时间#': {'query': '你想看几点场', 'values': '[0-9]{1,2}'}}
+请输入：看什么电影呢
+{'available_nodes': ['scenario-看电影_node1'], 'query': '看什么电影呢', 'hit_node': 'scenario-看电影_node1', 'intent_score': 0.375, 'require_slot': '#时间#', 'policy': 'request', 'response': '你想看几点场', 'last_response': '你想看几点场', 'last_available_childnode': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay']}
+
+你想看几点场
+===========
+请输入：12点的吧
+{'available_nodes': ['scenario-看电影_node1'], 'query': '12点的吧', 'hit_node': 'scenario-看电影_node1', 'intent_score': 0.0, 'require_slot': '#电影名称#', 'policy': 'request', 'response': '你想看什么电影', 'last_response': '你想看什么电影', 'last_available_childnode': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '12'}
+
+你想看什么电影
+===========
+请输入：来个动画，浪浪山小妖怪
+{'available_nodes': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], 'query': '来个动画，浪浪山小妖怪', 'hit_node': 'scenario-看电影_node1', 'intent_score': 0.0, 'require_slot': None, 'policy': 'reply', 'response': '为你找到12点的浪浪山小妖怪电影', 'last_response': '为你找到12点的浪浪山小妖怪电影', 'last_available_childnode': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '12', '#电影名称#': '浪浪山小妖怪'}
+
+为你找到12点的浪浪山小妖怪电影
+===========
+请输入：您再说一遍
+{'available_nodes': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], 'query': '您再说一遍', 'hit_node': 'scenario-看电影_replay', 'intent_score': 0.5714285714285714, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：为你找到12点的浪浪山小妖怪电影', 'last_response': '为你找到12点的浪浪山小妖怪电影', 'last_available_childnode': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '12', '#电影名称#': '浪浪山小妖怪'}
+
+好的，我再说一遍：为你找到12点的浪浪山小妖怪电影
+===========
+请输入：好的，有可乐不
+{'available_nodes': ['scenario-看电影_replay'], 'query': '好的，有可乐不', 'hit_node': 'scenario-看电影_node3', 'intent_score': 0.2222222222222222, 'require_slot': None, 'policy': 'reply', 'response': '好的，给你可乐', 'last_response': '好的，给你可乐', 'last_available_childnode': ['scenario-看电影_replay'], '#时间#': '12', '#电影名称#': '浪浪山小妖怪'}
+
+好的，给你可乐
+===========
+请输入：你说啥
+{'available_nodes': ['scenario-看电影_replay'], 'query': '你说啥', 'hit_node': 'scenario-看电影_replay', 'intent_score': 0.4, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：好的，给你可乐', 'last_response': '好的，给你可乐', 'last_available_childnode': ['scenario-看电影_replay'], '#时间#': '12', '#电影名称#': '浪浪山小妖怪'}
+
+好的，我再说一遍：好的，给你可乐
+===========
+请输入：q
+程序已退出。
