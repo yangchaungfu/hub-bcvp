@@ -1,0 +1,99 @@
+from py2neo import Graph
+from py2neo.errors import Neo4jError
+
+# 1. 优化连接协议（bolt:// 比 neo4j:// 更稳定）
+try:
+    graph = Graph("neo4j://127.0.0.1:7687", auth=("neo4j", "12345678"))
+    print("✅ 成功连接到 Neo4j 数据库")
+except Neo4jError as e:
+    print(f"❌ 连接失败：{e}")
+    exit()
+
+# 2. 合并所有 CREATE 为一个语句（关键修复点）
+cypher = """
+// 合并所有创建逻辑为一个 CREATE 语句，确保节点变量可跨部分引用
+CREATE 
+  // 创建用户节点
+  (u1:User {
+    userId: 1001,
+    username: "张三",
+    age: 28,
+    gender: "男",
+    registerTime: "2024-01-15",
+    city: "北京",
+    vipLevel: 2
+  }),
+  (u2:User {
+    userId: 1002,
+    username: "李四",
+    age: 32,
+    gender: "女",
+    registerTime: "2024-02-20",
+    city: "上海",
+    vipLevel: 3
+  }),
+  // 创建商品节点
+  (p1:Product {
+    productId: 2001,
+    name: "华为Mate70 Pro",
+    price: 6999.00,
+    category: "手机",
+    stock: 500,
+    brand: "华为",
+    releaseTime: "2024-09-01"
+  }),
+  (p2:Product {
+    productId: 2002,
+    name: "小米手环9",
+    price: 299.00,
+    category: "智能穿戴",
+    stock: 2000,
+    brand: "小米",
+    releaseTime: "2024-08-15"
+  }),
+  (p3:Product {
+    productId: 2003,
+    name: "苹果AirPods Pro2",
+    price: 1899.00,
+    category: "耳机",
+    stock: 1000,
+    brand: "苹果",
+    releaseTime: "2024-07-10"
+  }),
+  // 创建订单节点
+  (o1:Order {
+    orderId: 3001,
+    orderTime: "2024-10-01 10:30:00",
+    totalAmount: 7298.00,
+    payStatus: "已支付",
+    deliveryStatus: "已发货"
+  }),
+  (o2:Order {
+    orderId: 3002,
+    orderTime: "2024-10-05 15:20:00",
+    totalAmount: 1899.00,
+    payStatus: "已支付",
+    deliveryStatus: "待发货"
+  }),
+  // 创建关系（此时 u1、p1、o1 等变量仍有效）
+  (u1)-[:CREATE_ORDER {createTime: "2024-10-01 10:30:00"}]->(o1),
+  (o1)-[:CONTAINS {quantity: 1, unitPrice: 6999.00}]->(p1),
+  (o1)-[:CONTAINS {quantity: 1, unitPrice: 299.00}]->(p2),
+  (u2)-[:CREATE_ORDER {createTime: "2024-10-05 15:20:00"}]->(o2),
+  (o2)-[:CONTAINS {quantity: 1, unitPrice: 1899.00}]->(p3),
+  (u1)-[:FAVORITE {favoriteTime: "2024-09-10"}]->(p3);
+"""
+
+# 3. 执行 Cypher 语句并捕获异常
+try:
+    result = graph.run(cypher)
+    # 打印执行结果（验证是否成功）
+    print(f"📝 语句执行成功！")
+except Neo4jError as e:
+    print(f"❌ 执行失败：{e}")
+
+# 4. 可选：查询验证数据
+verify_cypher = "MATCH (u:User) RETURN u.userId, u.username LIMIT 2"
+verify_result = graph.run(verify_cypher).data()
+for record in verify_result:
+    print(f"✅ 验证数据：用户ID={record['u.userId']}，用户名={record['u.username']}")

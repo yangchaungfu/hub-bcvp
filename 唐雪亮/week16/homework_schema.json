@@ -1,0 +1,43 @@
+{
+  "entitys": [
+    "张三",
+    "u2",
+    "u3",
+    "p1",
+    "p2",
+    "p3",
+    "o1",
+    "o2"
+  ],
+  "relations": [
+    "CREATE_ORDER",
+    "CONTAINS",
+    "FAVORITE"
+  ],
+  "labels": [
+    "User",
+    "Product",
+    "Order"
+  ],
+  "attributes": [
+    "userId",
+    "username",
+    "age",
+    "gender",
+    "registerTime",
+    "city",
+    "vipLevel",
+    "productId",
+    "name",
+    "price",
+    "category",
+    "stock",
+    "brand",
+    "releaseTime",
+    "orderId",
+    "orderTime",
+    "totalAmount",
+    "payStatus",
+    "deliveryStatus"
+  ]
+}
