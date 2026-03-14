@@ -1,0 +1,317 @@
+import re
+from collections import defaultdict, Counter
+import docx
+import unicodedata  # 处理Unicode字符的辅助库
+
+
+class UnicodeBPETokenizer:
+    def __init__(self, vocab_size=1000, end_token='<eos>'):
+        """
+        适配所有Unicode字符的BPE分词器
+        :param vocab_size: 词汇表大小
+        :param end_token: 序列结束标记（避免与普通字符冲突）
+        """
+        self.vocab_size = vocab_size
+        self.end_token = end_token
+        self.vocab = {}  # 最终词汇表 {token: idx}
+        self.merges = {}  # 合并历史 {(char1, char2): new_token}
+        self.reverse_vocab = {}  # 反向词汇表 {idx: token}
+
+    def _get_stats(self, char_sequences):
+        """统计Unicode字符对的频率（通用版）"""
+        pairs = defaultdict(int)
+        for seq, freq in char_sequences.items():
+            chars = seq.split()
+            for i in range(len(chars) - 1):
+                # 统计所有相邻Unicode字符对
+                pair = (chars[i], chars[i + 1])
+                pairs[pair] += freq
+        return pairs
+
+    def _merge_pair(self, char_sequences, pair, new_token):
+        """合并指定的Unicode字符对"""
+        # 转义特殊字符（如标点、符号），避免正则匹配异常
+        pattern = re.escape(' '.join(pair))
+        merged_sequences = {}
+
+        for seq, freq in char_sequences.items():
+            merged_seq = re.sub(pattern, new_token, seq)
+            merged_sequences[merged_seq] = freq
+
+        return merged_sequences
+
+    def _normalize_unicode(self, text):
+        """
+        标准化Unicode字符（解决同字异形问题）
+        - NFC归一化：合并组合字符（如 é = e + ´）
+        - 清理不可见控制字符
+        """
+        # 标准化Unicode形式
+        normalized = unicodedata.normalize('NFC', text)
+        # 移除控制字符（\x00-\x1F, \x7F），保留换行和制表符
+        cleaned = re.sub(r'[\x00-\x1F\x7F]', '', normalized)
+        # 统一空白字符为单个空格
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        return cleaned
+
+    def train(self, text):
+        """
+        训练通用BPE分词器（支持所有Unicode字符）
+        :param text: 包含任意Unicode字符的文本
+        """
+        # 1. Unicode标准化和预处理
+        clean_text = self._normalize_unicode(text)
+        if not clean_text:
+            raise ValueError("训练文本为空或仅包含无效字符！")
+
+        # 2. 拆分所有Unicode字符（list()天然支持Unicode）
+        # 整段文本作为一个序列，按字符拆分并用空格分隔
+        char_seq = ' '.join(list(clean_text)) + f' {self.end_token}'
+        char_sequences = {char_seq: 1}  # 频率初始化为1
+
+        # 3. 构建初始词汇表（所有唯一Unicode字符 + 结束标记）
+        all_chars = set(char_seq.split())
+        self.vocab = {char: idx for idx, char in enumerate(sorted(all_chars))}
+        self.reverse_vocab = {idx: char for char, idx in self.vocab.items()}
+        current_vocab_size = len(self.vocab)
+
+        # 4. 迭代合并字符对（直到达到词汇表大小）
+        while current_vocab_size < self.vocab_size:
+            # 统计字符对频率
+            pairs = self._get_stats(char_sequences)
+            if not pairs:
+                break  # 无可用合并对
+
+            # 选择频率最高的字符对
+            best_pair = max(pairs, key=pairs.get)
+            new_token = ''.join(best_pair)
+
+            # 记录合并规则
+            self.merges[best_pair] = new_token
+
+            # 合并字符对
+            char_sequences = self._merge_pair(char_sequences, best_pair, new_token)
+
+            # 更新词汇表
+            if new_token not in self.vocab:
+                self.vocab[new_token] = current_vocab_size
+                self.reverse_vocab[current_vocab_size] = new_token
+                current_vocab_size += 1
+
+    def tokenize(self, text):
+        """
+        对任意Unicode文本进行BPE分词
+        :param text: 待分词文本（支持多语言混合）
+        :return: 子词列表（Unicode字符/合并后的子词）
+        """
+        if not self.merges:
+            raise ValueError("请先调用train()方法训练分词器！")
+
+        # 1. Unicode标准化
+        clean_text = self._normalize_unicode(text)
+        if not clean_text:
+            return []
+
+        # 2. 拆分字符并添加结束标记
+        chars = list(clean_text) + [self.end_token]
+
+        # 3. 迭代合并（反向应用训练的合并规则）
+        while len(chars) > 1:
+            # 生成所有相邻字符对
+            pairs = [(chars[i], chars[i + 1]) for i in range(len(chars) - 1)]
+            # 筛选出在合并规则中的有效对
+            valid_pairs = [p for p in pairs if p in self.merges]
+
+            if not valid_pairs:
+                break
+
+            # 选择最早合并的字符对（保证合并顺序一致）
+            best_pair = min(valid_pairs, key=lambda p: list(self.merges.keys()).index(p))
+            # 执行合并
+            idx = pairs.index(best_pair)
+            chars = chars[:idx] + [self.merges[best_pair]] + chars[idx + 2:]
+
+        return chars
+
+    def detokenize(self, tokens):
+        """
+        将Unicode BPE分词结果还原为文本
+        :param tokens: 子词列表
+        :return: 完整的Unicode文本
+        """
+        # 移除结束标记并拼接所有子词
+        text = ''.join([token for token in tokens if token != self.end_token])
+        return text
+
+    def save_vocab(self, vocab_path):
+        """保存词汇表到文件（方便复用）"""
+        import json
+        with open(vocab_path, 'w', encoding='utf-8') as f:
+            # 转换tuple键为字符串，方便JSON序列化
+            merges_serializable = {f"{k[0]},{k[1]}": v for k, v in self.merges.items()}
+            data = {
+                'vocab': self.vocab,
+                'merges': merges_serializable,
+                'end_token': self.end_token,
+                'vocab_size': self.vocab_size
+            }
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
+    def load_vocab(self, vocab_path):
+        """从文件加载词汇表（无需重新训练）"""
+        import json
+        with open(vocab_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        self.vocab = data['vocab']
+        self.merges = {tuple(k.split(',')): v for k, v in data['merges'].items()}
+        self.end_token = data['end_token']
+        self.vocab_size = data['vocab_size']
+        self.reverse_vocab = {idx: token for token, idx in self.vocab.items()}
+
+    def encode(self, text):
+        """核心用法1：文本 → 子词 → 数字ID（模型输入）"""
+        tokens = self.tokenize(text)
+        # 将子词映射为数字ID，未找到的标记为<UNK>（ID=-1，可自定义）
+        ids = [self.vocab.get(token, -1) for token in tokens]
+        return ids
+
+    def decode(self, ids):
+        """核心用法2：数字ID → 子词 → 文本（模型输出还原）"""
+        # 将数字ID还原为子词，未知ID替换为<UNK>
+        tokens = [self.reverse_vocab.get(idx, '<UNK>') for idx in ids]
+        text = self.detokenize(tokens)
+        return text
+
+
+def read_word_document(file_path):
+    """
+    读取Word文档（.docx）的所有Unicode字符
+    :param file_path: 文档路径
+    :return: 包含所有Unicode字符的文本
+    """
+    try:
+        doc = docx.Document(file_path)
+        full_text = []
+
+        # 读取段落
+        for para in doc.paragraphs:
+            para_text = para.text.strip()
+            if para_text:
+                full_text.append(para_text)
+
+        # 读取表格（可选，如需处理表格）
+        for table in doc.tables:
+            for row in table.rows:
+                row_text = []
+                for cell in row.cells:
+                    cell_text = cell.text.strip()
+                    if cell_text:
+                        row_text.append(cell_text)
+                if row_text:
+                    full_text.append(' '.join(row_text))
+
+        # 合并所有内容，保留原始Unicode字符
+        article = '\n'.join(full_text)
+        return article
+
+    except FileNotFoundError:
+        raise FileNotFoundError(f"文件不存在：{file_path}")
+    except Exception as e:
+        raise Exception(f"读取文档失败：{str(e)}")
+
+
+# ==================== 通用Unicode使用示例 ====================
+if __name__ == "__main__":
+    # 1. 配置文档路径（支持任意语言的docx文件）
+    word_file_path = r"E:\AI_NLP课程\第十四周 大语言模型应用相关\Agent\文章优化agent\优化前后文章.docx"  # 替换为你的文档路径
+
+    try:
+        # 2. 读取包含任意Unicode字符的文档
+        # article = read_word_document(word_file_path)
+        # print(f"=== 读取的Unicode文本（前150字符）===")
+        # print(article[:150] + "..." if len(article) > 150 else article)
+        # print(f"\n文本总字符数：{len(article)}")
+        #
+        # # 3. 初始化通用BPE分词器
+        # # 词汇表大小建议：短文本500-1000，长文本1000-2000
+        # tokenizer = UnicodeBPETokenizer(vocab_size=500, end_token='<eos>')
+        #
+        # # 4. 训练分词器（核心步骤）
+        # tokenizer.train(article)
+        # print(f"\n=== 训练完成 ===")
+        # print(f"词汇表大小：{len(tokenizer.vocab)}")
+        # print(f"合并规则数量：{len(tokenizer.merges)}")
+        #
+        # # 5. 通用分词（支持中文、英文、数字、标点等）
+        # bpe_tokens = tokenizer.tokenize(article)
+        # print(f"\n=== Unicode BPE分词结果（前30个子词）===")
+        # print(bpe_tokens[:30])
+        #
+        # # 6. 还原文本
+        # restored_text = tokenizer.detokenize(bpe_tokens)
+        # print(f"\n=== 还原后的文本（前150字符）===")
+        # print(restored_text[:150] + "..." if len(restored_text) > 150 else restored_text)
+        #
+        # # 7. 保存/加载词汇表（可选，避免重复训练）
+        # tokenizer.save_vocab("unicode_bpe_vocab.json")
+
+        tokenizer = UnicodeBPETokenizer()
+        tokenizer.load_vocab("unicode_bpe_vocab.json")  # 后续使用时加载
+
+        # ==================== 步骤3：词表的核心使用场景 ====================
+        # 测试文本（可以是新的、未参与训练的文本）
+        test_text = "人工智能（AI）是未来的核心技术，Natural language processing is key."
+
+        # 场景1：文本 → 子词（分词）
+        tokens = tokenizer.tokenize(test_text)
+        print("\n【场景1：文本→子词】")
+        print(f"原始文本：{test_text}")
+        print(f"子词序列：{tokens[:20]}...")  # 打印前20个子词
+
+        # 场景2：子词 → 数字ID（模型输入编码）
+        ids = tokenizer.encode(test_text)
+        print("\n【场景2：子词→数字ID】")
+        print(f"数字ID序列：{ids[:20]}...")
+
+        # 场景3：数字ID → 文本（模型输出解码）
+        restored_text = tokenizer.decode(ids)
+        print("\n【场景3：数字ID→文本】")
+        print(f"还原后的文本：{restored_text}")
+
+        # 场景4：批量处理文本（实际业务中常用）
+        print("\n【场景4：批量处理文本】")
+        batch_texts = [
+            "大模型的应用场景越来越广",
+            "GPT-4 is a powerful model",
+            "数据挖掘（Data Mining）是AI的分支"
+        ]
+        for text in batch_texts:
+            tokens = tokenizer.tokenize(text)
+            ids = tokenizer.encode(text)
+            print(f"\n文本：{text}")
+            print(f"子词：{tokens}")
+            print(f"ID序列：{ids}")
+
+        # 场景5：词表的扩展使用（查找子词ID/根据ID查子词）
+        print("\n【场景5：词表查询】")
+        # 查子词对应的ID
+        target_token = "人工智能"
+        if target_token in tokenizer.vocab:
+            print(f"子词「{target_token}」的ID：{tokenizer.vocab[target_token]}")
+        else:
+            print(f'{target_token} 不存在于词表')
+        # 查ID对应的子词
+        target_id = 100
+        if target_id in tokenizer.reverse_vocab:
+            print(f"ID「{target_id}」对应的子词：{tokenizer.reverse_vocab[target_id]}")
+
+    except FileNotFoundError as e:
+        print(f"文件错误：{e}")
+        print("请检查路径，例如：")
+        print("  Windows: 'C:/Users/xxx/多语言文档.docx'")
+        print("  Mac/Linux: '/Users/xxx/多语言文档.docx'")
+    except ValueError as e:
+        print(f"值错误：{e}")
+    except Exception as e:
+        print(f"运行错误：{e}")
+

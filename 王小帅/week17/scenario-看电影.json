@@ -1,0 +1,26 @@
+[
+{
+"id":"node1",
+"intent":["我要看电影"],
+"slot":["#时间#", "#电影名称#"],
+"response":"为你找到#时间#点的#电影名称#电影，请问还需要爆米花或者可乐么？",
+"childnode":["node2", "node3", "node4"]
+},
+{
+"id":"node2",
+"intent":["来个爆米花"],
+"response":"好的，给你爆米花，还需要什么服务？",
+"childnode":["node3","node4"]
+},
+{
+"id":"node3",
+"intent":["来个可乐"],
+"response":"好的，给你可乐，还需要什么服务？",
+"childnode":["node4"]
+},
+{
+"id":"node4",
+"intent":["重新选择","再来一单"],
+"response":"已结束订单，可重新选择。"
+}
+]

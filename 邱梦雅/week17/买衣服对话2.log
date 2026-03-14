@@ -1,0 +1,49 @@
+
+{'#服装类型#': {'query': '您想买长袖、短袖还是半截袖', 'values': '长袖|短袖|半截袖'}, '#服装颜色#': {'query': '您喜欢什么颜色', 'values': '红|橙|黄|绿|青|蓝|紫'}, '#服装尺寸#': {'query': '您想要多尺寸', 'values': 's|m|l|xl|xxl'}, '#分期付款期数#': {'query': '您想分多少期，可以有3期，6期，9期，12期', 'values': '3|6|9|12'}, '#支付方式#': {'query': '您想使用什么支付方式', 'values': '信用卡|支付宝|微信'}, '#电影名称#': {'query': '你想看什么电影', 'values': '流浪地球|浪浪山小妖怪'}, '#时间#': {'query': '你想看几点场', 'values': '[0-9]{1,2}'}}
+请输入：来件衣服吧
+{'available_nodes': ['scenario-买衣服_node1'], 'query': '来件衣服吧', 'hit_node': 'scenario-买衣服_node1', 'intent_score': 0.5714285714285714, 'require_slot': '#服装类型#', 'policy': 'request', 'response': '您想买长袖、短袖还是半截袖', 'last_response': '您想买长袖、短袖还是半截袖', 'last_available_childnode': ['scenario-买衣服_node2', 'scenario-买衣服_node3', 'scenario-买衣服_node4', 'scenario-买衣服_replay']}
+
+您想买长袖、短袖还是半截袖
+===========
+请输入：夏天快到了，要短袖
+{'available_nodes': ['scenario-买衣服_node1'], 'query': '夏天快到了，要短袖', 'hit_node': 'scenario-买衣服_node1', 'intent_score': 0.07692307692307693, 'require_slot': '#服装颜色#', 'policy': 'request', 'response': '您喜欢什么颜色', 'last_response': '您喜欢什么颜色', 'last_available_childnode': ['scenario-买衣服_node2', 'scenario-买衣服_node3', 'scenario-买衣服_node4', 'scenario-买衣服_replay'], '#服装类型#': '短袖'}
+
+您喜欢什么颜色
+===========
+请输入：紫色吧
+{'available_nodes': ['scenario-买衣服_node1'], 'query': '紫色吧', 'hit_node': 'scenario-买衣服_node1', 'intent_score': 0.0, 'require_slot': '#服装尺寸#', 'policy': 'request', 'response': '您想要多尺寸', 'last_response': '您想要多尺寸', 'last_available_childnode': ['scenario-买衣服_node2', 'scenario-买衣服_node3', 'scenario-买衣服_node4', 'scenario-买衣服_replay'], '#服装类型#': '短袖', '#服装颜色#': '紫'}
+
+您想要多少尺寸
+===========
+请输入：m码的中等
+{'available_nodes': ['scenario-买衣服_node2', 'scenario-买衣服_node3', 'scenario-买衣服_node4', 'scenario-买衣服_replay'], 'query': 'm码的中等', 'hit_node': 'scenario-买衣服_node1', 'intent_score': 0.0, 'require_slot': None, 'policy': 'reply', 'response': '为您推荐这一款，m号，紫色短袖，产品连接：xxx', 'last_response': '为您推荐这一款，m号，紫色短袖，产品连接：xxx', 'last_available_childnode': ['scenario-买衣服_node2', 'scenario-买衣服_node3', 'scenario-买衣服_node4', 'scenario-买衣服_replay'], '#服装类型#': '短袖', '#服装颜色#': '紫', '#服装尺寸#': 'm'}
+
+为您推荐这一款，m号，紫色短袖，产品连接：xxx
+===========
+请输入：我没听到你说什么
+{'available_nodes': ['scenario-买衣服_node2', 'scenario-买衣服_node3', 'scenario-买衣服_node4', 'scenario-买衣服_replay'], 'query': '我没听到你说什么', 'hit_node': 'scenario-买衣服_replay', 'intent_score': 0.5, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：为您推荐这一款，m号，紫色短袖，产品连接：xxx', 'last_response': '为您推荐这一款，m号，紫色短袖，产品连接：xxx', 'last_available_childnode': ['scenario-买衣服_node2', 'scenario-买衣服_node3', 'scenario-买衣服_node4', 'scenario-买衣服_replay'], '#服装类型#': '短袖', '#服装颜色#': '紫', '#服装尺寸#': 'm'}
+
+好的，我再说一遍：为您推荐这一款，m号，紫色短袖，产品连接：xxx
+===========
+请输入：啊再说一遍
+{'available_nodes': ['scenario-买衣服_node2', 'scenario-买衣服_node3', 'scenario-买衣服_node4', 'scenario-买衣服_replay'], 'query': '啊再说一遍', 'hit_node': 'scenario-买衣服_replay', 'intent_score': 0.5714285714285714, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：为您推荐这一款，m号，紫色短袖，产品连接：xxx', 'last_response': '为您推荐这一款，m号，紫色短袖，产品连接：xxx', 'last_available_childnode': ['scenario-买衣服_node2', 'scenario-买衣服_node3', 'scenario-买衣服_node4', 'scenario-买衣服_replay'], '#服装类型#': '短袖', '#服装颜色#': '紫', '#服装尺寸#': 'm'}
+
+好的，我再说一遍：为您推荐这一款，m号，紫色短袖，产品连接：xxx
+===========
+请输入：好的，下单吧
+{'available_nodes': ['scenario-买衣服_replay'], 'query': '好的，下单吧', 'hit_node': 'scenario-买衣服_node4', 'intent_score': 0.25, 'require_slot': None, 'policy': 'reply', 'response': '已为您下单，谢谢惠顾，流程结束', 'last_response': '已为您下单，谢谢惠顾，流程结束', 'last_available_childnode': ['scenario-买衣服_replay'], '#服装类型#': '短袖', '#服装颜色#': '紫', '#服装尺寸#': 'm'}
+
+已为您下单，谢谢惠顾，流程结束
+===========
+请输入：什么
+{'available_nodes': ['scenario-买衣服_replay'], 'query': '什么', 'hit_node': 'scenario-买衣服_replay', 'intent_score': 0.5, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：已为您下单，谢谢惠顾，流程结束', 'last_response': '已为您下单，谢谢惠顾，流程结束', 'last_available_childnode': ['scenario-买衣服_replay'], '#服装类型#': '短袖', '#服装颜色#': '紫', '#服装尺寸#': 'm'}
+
+好的，我再说一遍：已为您下单，谢谢惠顾，流程结束
+===========
+请输入：能不能再说一下
+{'available_nodes': ['scenario-买衣服_replay'], 'query': '能不能再说一下', 'hit_node': 'scenario-买衣服_replay', 'intent_score': 0.7142857142857143, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：已为您下单，谢谢惠顾，流程结束', 'last_response': '已为您下单，谢谢惠顾，流程结束', 'last_available_childnode': ['scenario-买衣服_replay'], '#服装类型#': '短袖', '#服装颜色#': '紫', '#服装尺寸#': 'm'}
+
+好的，我再说一遍：已为您下单，谢谢惠顾，流程结束
+===========
+请输入：q
+程序已退出。

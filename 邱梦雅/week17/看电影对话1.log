@@ -1,0 +1,59 @@
+
+{'#服装类型#': {'query': '您想买长袖、短袖还是半截袖', 'values': '长袖|短袖|半截袖'}, '#服装颜色#': {'query': '您喜欢什么颜色', 'values': '红|橙|黄|绿|青|蓝|紫'}, '#服装尺寸#': {'query': '您想要多尺寸', 'values': 's|m|l|xl|xxl'}, '#分期付款期数#': {'query': '您想分多少期，可以有3期，6期，9期，12期', 'values': '3|6|9|12'}, '#支付方式#': {'query': '您想使用什么支付方式', 'values': '信用卡|支付宝|微信'}, '#电影名称#': {'query': '你想看什么电影', 'values': '流浪地球|浪浪山小妖怪'}, '#时间#': {'query': '你想看几点场', 'values': '[0-9]{1,2}'}}
+请输入：我想看电影
+{'available_nodes': ['scenario-看电影_node1'], 'query': '我想看电影', 'hit_node': 'scenario-看电影_node1', 'intent_score': 0.6666666666666666, 'require_slot': '#时间#', 'policy': 'request', 'response': '你想看几点场', 'last_response': '你想看几点场', 'last_available_childnode': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay']}
+
+你想看几点场
+===========
+请输入：10点场吧
+{'available_nodes': ['scenario-看电影_node1'], 'query': '10点场吧', 'hit_node': 'scenario-看电影_node1', 'intent_score': 0.0, 'require_slot': '#电影名称#', 'policy': 'request', 'response': '你想看什么电影', 'last_response': '你想看什么电影', 'last_available_childnode': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '10'}
+
+你想看什么电影
+===========
+请输入：流浪地球
+{'available_nodes': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], 'query': '流浪地球', 'hit_node': 'scenario-看电影_node1', 'intent_score': 0.0, 'require_slot': None, 'policy': 'reply', 'response': '为你找到10点的流浪地球电影', 'last_response': '为你找到10点的流浪地球电影', 'last_available_childnode': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '10', '#电影名称#': '流浪地球'}
+
+为你找到10点的流浪地球电影
+===========
+请输入：什么？
+{'available_nodes': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], 'query': '什么？', 'hit_node': 'scenario-看电影_replay', 'intent_score': 0.4, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：为你找到10点的流浪地球电影', 'last_response': '为你找到10点的流浪地球电影', 'last_available_childnode': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '10', '#电影名称#': '流浪地球'}
+
+好的，我再说一遍：为你找到10点的流浪地球电影
+===========
+请输入：不好意思没听清
+{'available_nodes': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], 'query': '不好意思没听清', 'hit_node': 'scenario-看电影_replay', 'intent_score': 0.375, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：为你找到10点的流浪地球电影', 'last_response': '为你找到10点的流浪地球电影', 'last_available_childnode': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '10', '#电影名称#': '流浪地球'}
+
+好的，我再说一遍：为你找到10点的流浪地球电影
+===========
+请输入：麻烦再说一遍
+{'available_nodes': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], 'query': '麻烦再说一遍', 'hit_node': 'scenario-看电影_replay', 'intent_score': 0.5, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：为你找到10点的流浪地球电影', 'last_response': '为你找到10点的流浪地球电影', 'last_available_childnode': ['scenario-看电影_node2', 'scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '10', '#电影名称#': '流浪地球'}
+
+好的，我再说一遍：为你找到10点的流浪地球电影
+===========
+请输入：好的，给我爆米花
+{'available_nodes': ['scenario-看电影_node3', 'scenario-看电影_replay'], 'query': '好的，给我爆米花', 'hit_node': 'scenario-看电影_node2', 'intent_score': 0.3, 'require_slot': None, 'policy': 'reply', 'response': '给你爆米花', 'last_response': '给你爆米花', 'last_available_childnode': ['scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '10', '#电影名称#': '流浪地球'}
+
+给你爆米花
+===========
+请输入：啊什么
+{'available_nodes': ['scenario-看电影_node3', 'scenario-看电影_replay'], 'query': '啊什么', 'hit_node': 'scenario-看电影_replay', 'intent_score': 0.4, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：给你爆米花', 'last_response': '给你爆米花', 'last_available_childnode': ['scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '10', '#电影名称#': '流浪地球'}
+
+好的，我再说一遍：给你爆米花
+===========
+请输入：周围声音太大，我听不清
+{'available_nodes': ['scenario-看电影_node3', 'scenario-看电影_replay'], 'query': '周围声音太大，我听不清', 'hit_node': 'scenario-看电影_replay', 'intent_score': 0.36363636363636365, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：给你爆米花', 'last_response': '给你爆米花', 'last_available_childnode': ['scenario-看电影_node3', 'scenario-看电影_replay'], '#时间#': '10', '#电影名称#': '流浪地球'}
+
+好的，我再说一遍：给你爆米花
+===========
+请输入：哦哦，有可乐吗
+{'available_nodes': ['scenario-看电影_replay'], 'query': '哦哦，有可乐吗', 'hit_node': 'scenario-看电影_node3', 'intent_score': 0.25, 'require_slot': None, 'policy': 'reply', 'response': '好的，给你可乐', 'last_response': '好的，给你可乐', 'last_available_childnode': ['scenario-看电影_replay'], '#时间#': '10', '#电影名称#': '流浪地球'}
+
+好的，给你可乐
+===========
+请输入：听不清你说话
+{'available_nodes': ['scenario-看电影_replay'], 'query': '听不清你说话', 'hit_node': 'scenario-看电影_replay', 'intent_score': 0.42857142857142855, 'require_slot': None, 'policy': 'replay', 'response': '好的，我再说一遍：好的，给你可乐', 'last_response': '好的，给你可乐', 'last_available_childnode': ['scenario-看电影_replay'], '#时间#': '10', '#电影名称#': '流浪地球'}
+
+好的，我再说一遍：好的，给你可乐
+===========
+请输入：q
+程序已退出。
